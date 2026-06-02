@@ -1,0 +1,3034 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CallKeeper — Fichas de RPG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ===========================
+       CSS VARIABLES
+       =========================== */
+    :root {
+      --bg-primary: #1a2e1a;
+      --bg-secondary: #0f1f0f;
+      --bg-section: #1d3a1d;
+      --bg-card: #152815;
+      --border-color: #3d5c3d;
+      --border-light: #2a4a2a;
+      --accent-primary: #c9a227;
+      --accent-secondary: #a08020;
+      --accent-hover: #b8921f;
+      --text-primary: #e8d9a0;
+      --text-secondary: #8fb88f;
+      --text-muted: #6a8a6a;
+      --input-bg: #0a1a0a;
+      --input-border: #2a4a2a;
+      --input-focus: #c9a227;
+      --danger: #8b2020;
+      --danger-hover: #a03030;
+      --magic: #2a3a5c;
+      --shadow: rgba(0, 0, 0, 0.6);
+      --font-title: 'IM Fell English SC', Georgia, serif;
+      --font-body: 'Crimson Text', 'Times New Roman', serif;
+      --font-mono: 'Courier Prime', 'Courier New', monospace;
+      --radius: 2px;
+      --transition: 200ms ease-in-out;
+    }
+
+    /* ===========================
+       RESET & BASE
+       =========================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 14px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      line-height: 1.4;
+      min-height: 100vh;
+    }
+
+    /* ===========================
+       SCROLLBAR
+       =========================== */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-secondary);
+    }
+
+    /* ===========================
+       TYPOGRAPHY
+       =========================== */
+    h1, h2, h3 {
+      font-family: var(--font-title);
+      letter-spacing: 2px;
+      color: var(--accent-primary);
+    }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 12px; }
+    h3 { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px; }
+
+    /* ===========================
+       LAYOUT
+       =========================== */
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===========================
+       HEADER
+       =========================== */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-logo svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .app-logo h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .app-logo span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-style: italic;
+      letter-spacing: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* ===========================
+       BUTTONS
+       =========================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--bg-section);
+      color: var(--text-primary);
+    }
+
+    .btn:hover {
+      background: var(--border-light);
+      border-color: var(--accent-secondary);
+      color: var(--accent-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent-secondary);
+      border-color: var(--accent-primary);
+      color: var(--bg-secondary);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-primary);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: var(--text-primary);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger-hover);
+      border-color: var(--danger-hover);
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+
+    .btn-icon {
+      padding: 6px 8px;
+      min-width: 32px;
+      justify-content: center;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ===========================
+       FORMS & INPUTS
+       =========================== */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 8px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.15);
+    }
+
+    .form-input[type="number"] {
+      text-align: center;
+      width: 100%;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238fb88f' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 32px;
+    }
+
+    .form-row {
+      display: grid;
+      gap: 12px;
+    }
+
+    .form-row-2 { grid-template-columns: 1fr 1fr; }
+    .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-row-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* ===========================
+       CARDS & PANELS
+       =========================== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 20px 0;
+    }
+
+    /* ===========================
+       SCREENS
+       =========================== */
+    .screen {
+      display: none;
+      flex: 1;
+      animation: fadeIn 150ms ease-in-out;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===========================
+       LOGIN SCREEN
+       =========================== */
+    .login-screen {
+      justify-content: center;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    .login-box .app-logo {
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .login-box .app-logo h1 {
+      font-size: 2rem;
+    }
+
+    .login-box .app-logo span {
+      display: block;
+      margin-top: 4px;
+    }
+
+    .login-instructions {
+      background: var(--bg-section);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 20px 0;
+      text-align: left;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .login-instructions h3 {
+      color: var(--accent-primary);
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .login-instructions ol {
+      padding-left: 20px;
+    }
+
+    .login-instructions li {
+      margin-bottom: 6px;
+    }
+
+    .login-instructions code {
+      background: var(--input-bg);
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-primary);
+    }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    /* ===========================
+       DASHBOARD SCREEN
+       =========================== */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .fiches-selector {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .fiches-selector select {
+      min-width: 240px;
+    }
+
+    .sheet-preview {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .sheet-preview h2 {
+      margin-bottom: 4px;
+    }
+
+    .sheet-preview .meta {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+
+    .no-sheet {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .no-sheet svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    /* ===========================
+       CHARACTER SHEET
+       =========================== */
+    .sheet-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sheet-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .sheet-name-display {
+      font-family: var(--font-title);
+      font-size: 1.2rem;
+      color: var(--accent-primary);
+    }
+
+    .sheet-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .save-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .save-indicator.saving {
+      color: var(--accent-primary);
+    }
+
+    .save-indicator.saved {
+      color: var(--text-secondary);
+    }
+
+    /* ===========================
+       TABS
+       =========================== */
+    .tab-bar {
+      display: flex;
+      gap: 2px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 4px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-section);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-secondary);
+      color: var(--bg-secondary);
+    }
+
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 150ms ease-in-out;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* ===========================
+       TAB: PRINCIPAL
+       =========================== */
+    .principal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .image-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .character-image-frame {
+      width: 220px;
+      height: 220px;
+      border: 3px solid var(--border-color);
+      border-radius: var(--radius);
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition);
+    }
+
+    .character-image-frame:hover {
+      border-color: var(--accent-secondary);
+    }
+
+    .character-image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .character-image-frame .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .character-image-frame .placeholder svg {
+      opacity: 0.4;
+      width: 48px;
+      height: 48px;
+    }
+
+    .image-upload-input {
+      display: none;
+    }
+
+    /* ===========================
+       STATUS SECTION
+       =========================== */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .status-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .status-box .label {
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .status-box .values {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .status-box .value-input {
+      width: 50px;
+      text-align: center;
+    }
+
+    .status-box .separator {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .status-box .max-value {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      min-width: 30px;
+    }
+
+    .status-box.auto-calculated {
+      background: var(--bg-section);
+      border-color: var(--accent-secondary);
+    }
+
+    .status-box.auto-calculated .label {
+      color: var(--accent-primary);
+    }
+
+    /* ===========================
+       ATTRIBUTES SECTION
+       =========================== */
+    .attributes-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 8px;
+    }
+
+    .attribute-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 8px 4px;
+      text-align: center;
+    }
+
+    .attribute-box .attr-name {
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+      color: var(--accent-primary);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .attribute-box .attr-input {
+      width: 100%;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 6px 2px;
+    }
+
+    .attribute-box .calc-row {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .attribute-box .calc-row span {
+      display: block;
+    }
+
+    /* ===========================
+       TAB: SKILLS
+       =========================== */
+    .skills-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skills-search {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex: 1;
+    }
+
+    .skills-search input {
+      max-width: 300px;
+    }
+
+    .skill-group {
+      margin-bottom: 20px;
+    }
+
+    .skill-group-title {
+      font-family: var(--font-title);
+      font-size: 1rem;
+      color: var(--accent-primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-bottom: none;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border-color);
+    }
+
+    .skills-table th {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 8px;
+      background: var(--bg-section);
+      border-bottom: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .skills-table th:first-child {
+      text-align: left;
+    }
+
+    .skills-table td {
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+
+    .skills-table td:first-child {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .skills-table td:first-child .skill-base {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .skills-table tr:hover td {
+      background: var(--bg-secondary);
+    }
+
+    .skill-input-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .skill-input {
+      width: 56px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .skill-calc {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ===========================
+       TAB: INVENTORY
+       =========================== */
+    .inventory-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .inventory-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: border-color var(--transition);
+    }
+
+    .inventory-item:hover {
+      border-color: var(--accent-secondary);
+    }
+
+    .inventory-item .carry-check {
+      width: 20px;
+      height: 20px;
+      margin-top: 4px;
+      cursor: pointer;
+      accent-color: var(--accent-primary);
+      flex-shrink: 0;
+    }
+
+    .inventory-item .item-fields {
+      flex: 1;
+      display: grid;
+      gap: 8px;
+    }
+
+    .inventory-item .item-name-input {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .inventory-item .item-desc-input {
+      font-size: 0.85rem;
+    }
+
+    .inventory-item .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ===========================
+       TAB: WEAPONS
+       =========================== */
+    .weapons-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .weapon-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .weapon-card:hover {
+      border-color: var(--danger);
+    }
+
+    .weapon-card .weapon-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .weapon-card .weapon-name-input {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      border: none;
+      background: transparent;
+      color: var(--accent-primary);
+      padding: 0;
+      width: 100%;
+    }
+
+    .weapon-card .weapon-name-input:focus {
+      outline: none;
+      color: var(--text-primary);
+    }
+
+    .weapon-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .weapon-grid .form-group label {
+      font-size: 0.75rem;
+    }
+
+    /* ===========================
+       TAB: MAGIC
+       =========================== */
+    .spells-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .spell-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .spell-card:hover {
+      border-color: var(--magic);
+    }
+
+    .spell-card .spell-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .spell-card .spell-name-input {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      border: none;
+      background: transparent;
+      color: var(--accent-primary);
+      padding: 0;
+      flex: 1;
+    }
+
+    .spell-card .spell-name-input:focus {
+      outline: none;
+      color: var(--text-primary);
+    }
+
+    .spell-cost-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .cost-toggle-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .cost-toggle-btn {
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-section);
+      color: var(--text-muted);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all var(--transition);
+    }
+
+    .cost-toggle-btn.active {
+      background: var(--magic);
+      border-color: #3a5a8c;
+      color: var(--text-primary);
+    }
+
+    .spell-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    /* ===========================
+       TAB: NOTES
+       =========================== */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .relationships-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .relation-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .relation-card .relation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .relation-card .relation-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .personal-info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .game-notes-section {
+      grid-column: 1 / -1;
+    }
+
+    .game-notes-section textarea {
+      min-height: 150px;
+    }
+
+    /* ===========================
+       TOAST NOTIFICATIONS
+       =========================== */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      padding: 12px 20px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px var(--shadow);
+      animation: slideIn 200ms ease-out;
+      max-width: 360px;
+    }
+
+    .toast.success {
+      border-color: var(--text-secondary);
+      color: var(--text-secondary);
+    }
+
+    .toast.error {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .toast.info {
+      border-color: var(--accent-secondary);
+      color: var(--accent-primary);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* ===========================
+       LOADING
+       =========================== */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 26, 10, 0.85);
+      z-index: 9998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .loading-overlay.active {
+      display: flex;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===========================
+       RESPONSIVE
+       =========================== */
+    @media (max-width: 1024px) {
+      .attributes-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+      .principal-grid {
+        grid-template-columns: 1fr;
+      }
+      .notes-grid {
+        grid-template-columns: 1fr;
+      }
+      .weapon-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .spell-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      html { font-size: 13px; }
+      .app-header {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .attributes-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .weapon-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .spell-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row-2 { grid-template-columns: 1fr; }
+      .form-row-3 { grid-template-columns: 1fr; }
+      .form-row-4 { grid-template-columns: 1fr 1fr; }
+      .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+      }
+      .character-image-frame {
+        width: 160px;
+        height: 160px;
+      }
+      .fiches-selector select {
+        min-width: 180px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .attributes-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+      }
+      .attribute-box .attr-name {
+        font-size: 0.65rem;
+      }
+      .attribute-box .attr-input {
+        font-size: 0.9rem;
+      }
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===========================
+       PRINT
+       =========================== */
+    @media print {
+      body { background: white; color: black; }
+      .app-header, .tab-bar, .sheet-top-bar, .btn, .toast-container { display: none !important; }
+      .screen { display: flex !important; }
+      .tab-panel { display: block !important; }
+      .card { border: 1px solid #888; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <span id="loadingText">Carregando...</span>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="app-container">
+
+  <!-- ===========================
+       LOGIN SCREEN
+       =========================== -->
+  <div class="screen active" id="screen-login">
+    <div class="login-screen">
+      <div class="login-box">
+        <div class="app-logo">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="16" stroke="#c9a227" stroke-width="2"/>
+            <circle cx="18" cy="18" r="8" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+            <circle cx="18" cy="18" r="3" fill="#c9a227"/>
+            <path d="M18 2 L18 6 M18 30 L18 34 M2 18 L6 18 M30 18 L34 18" stroke="#c9a227" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M6.34 6.34 L9.37 9.37 M26.63 26.63 L29.66 29.66 M6.34 29.66 L9.37 26.63 M26.63 9.37 L29.66 6.34" stroke="#c9a227" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <h1>CallKeeper</h1>
+            <span>Sistema de Fichas para RPG</span>
+          </div>
+        </div>
+
+        <p style="color: var(--text-muted); font-style: italic; margin-bottom: 8px; font-size: 0.9rem;">
+          Preencha suas fichas de <em>Chamado de Cthulhu</em> e outros sistemas
+        </p>
+
+        <div class="login-instructions">
+          <h3>Como obter seu Token do GitHub:</h3>
+          <ol>
+            <li>Acesse <code>github.com</code> e faça login</li>
+            <li>Clique em sua foto → <code>Settings</code></li>
+            <li>No menu lateral: <code>Developer settings</code></li>
+            <li>Clique em <code>Personal access tokens → Tokens (classic)</code></li>
+            <li>Generate new token → marque o escopo <code>gist</code></li>
+            <li>Copie o token e cole no campo abaixo</li>
+          </ol>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Token do GitHub (Personal Access Token)</label>
+          <input type="password" class="form-input" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nome de usuário (opcional, para display)</label>
+          <input type="text" class="form-input" id="github-username" placeholder="Seu nome no GitHub" autocomplete="off">
+        </div>
+
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;" onclick="Auth.login()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Entrar
+        </button>
+
+        <div class="login-divider">ou</div>
+
+        <button class="btn" style="width: 100%; justify-content: center;" onclick="Auth.loginLocal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Modo Offline (local)
+        </button>
+
+        <p style="margin-top: 16px; font-size: 0.75rem; color: var(--text-muted);">
+          Seus dados ficam salvos no seu navegador. Para acesso em múltiplos dispositivos, use o modo GitHub.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===========================
+       DASHBOARD SCREEN
+       =========================== -->
+  <div class="screen" id="screen-dashboard">
+    <div class="app-header">
+      <div class="app-logo">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="16" stroke="#c9a227" stroke-width="2"/>
+          <circle cx="18" cy="18" r="8" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+          <circle cx="18" cy="18" r="3" fill="#c9a227"/>
+          <path d="M18 2 L18 6 M18 30 L18 34 M2 18 L6 18 M30 18 L34 18" stroke="#c9a227" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h1>CallKeeper</h1>
+          <span id="user-display-name">Conectado</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="Dashboard.newSheet()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nova Ficha
+        </button>
+        <button class="btn btn-danger" onclick="Auth.logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </div>
+
+    <div class="dashboard-header">
+      <h2 style="margin: 0;">Minhas Fichas</h2>
+      <div class="fiches-selector">
+        <select class="form-select" id="fiches-select" onchange="Dashboard.selectSheet(this.value)">
+          <option value="">— Selecione uma ficha —</option>
+        </select>
+        <button class="btn btn-danger btn-sm" onclick="Dashboard.deleteSheet()" id="btn-delete-sheet" style="display:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Excluir
+        </button>
+      </div>
+    </div>
+
+    <div id="dashboard-content">
+      <div class="no-sheet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <h3>Nenhuma ficha encontrada</h3>
+        <p>Clique em "Nova Ficha" para criar sua primeira ficha de personagem.</p>
+        <button class="btn btn-primary" onclick="Dashboard.newSheet()" style="margin-top: 12px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Criar Nova Ficha
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===========================
+       CHARACTER SHEET SCREEN
+       =========================== -->
+  <div class="screen" id="screen-sheet">
+    <div class="app-header">
+      <div class="app-logo">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="16" stroke="#c9a227" stroke-width="2"/>
+          <circle cx="18" cy="18" r="8" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+          <circle cx="18" cy="18" r="3" fill="#c9a227"/>
+        </svg>
+        <div>
+          <h1>CallKeeper</h1>
+          <span id="sheet-header-name">Ficha de Personagem</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="save-indicator" id="save-indicator">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>Aguardando</span>
+        </div>
+        <button class="btn" onclick="Sheet.backToDashboard()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Fichas
+        </button>
+        <button class="btn btn-danger" onclick="Auth.logout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </div>
+
+    <div class="sheet-container">
+      <div class="tab-bar" id="tab-bar">
+        <button class="tab-btn active" data-tab="principal" onclick="Sheet.switchTab('principal')">Principal</button>
+        <button class="tab-btn" data-tab="skills" onclick="Sheet.switchTab('skills')">Perícias</button>
+        <button class="tab-btn" data-tab="inventory" onclick="Sheet.switchTab('inventory')">Inventário</button>
+        <button class="tab-btn" data-tab="weapons" onclick="Sheet.switchTab('weapons')">Armas</button>
+        <button class="tab-btn" data-tab="magic" onclick="Sheet.switchTab('magic')">Magia</button>
+        <button class="tab-btn" data-tab="notes" onclick="Sheet.switchTab('notes')">Notas</button>
+      </div>
+
+      <div class="tab-content" id="tab-content">
+
+        <!-- TAB: PRINCIPAL -->
+        <div class="tab-panel active" id="tab-panel-principal">
+          <div class="principal-grid">
+            <!-- Left: Image + Basic Info -->
+            <div>
+              <div class="card">
+                <h2>Identidade</h2>
+                <div class="image-section">
+                  <div class="character-image-frame" id="image-frame" onclick="document.getElementById('image-upload-input').click()">
+                    <div class="placeholder" id="image-placeholder">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      <span>Clique para<br>adicionar imagem<br>(512×512)</span>
+                    </div>
+                    <img id="character-image" style="display:none;" alt="Personagem">
+                  </div>
+                  <input type="file" id="image-upload-input" class="image-upload-input" accept="image/*" onchange="Sheet.handleImageUpload(event)">
+                  <button class="btn btn-sm" onclick="Sheet.clearImage()">Remover imagem</button>
+                </div>
+                <hr class="section-divider">
+                <div class="form-row form-row-2">
+                  <div class="form-group">
+                    <label class="form-label">Nome do Jogador</label>
+                    <input type="text" class="form-input" id="player-name" oninput="Sheet.markDirty(); Sheet.updateCharName()" placeholder="Seu nome">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Nome do Personagem</label>
+                    <input type="text" class="form-input" id="char-name" oninput="Sheet.markDirty(); Sheet.updateCharName()" placeholder="Nome do personagem">
+                  </div>
+                </div>
+                <div class="form-row form-row-2">
+                  <div class="form-group">
+                    <label class="form-label">Profissão</label>
+                    <input type="text" class="form-input" id="occupation" oninput="Sheet.markDirty()" placeholder="Ex: Detetive">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Idade</label>
+                    <input type="number" class="form-input" id="age" oninput="Sheet.markDirty()" placeholder="0" min="0" max="120">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status Section -->
+              <div class="card">
+                <h2>Status</h2>
+                <div class="status-grid">
+                  <div class="status-box">
+                    <div class="label">Pontos de Vida</div>
+                    <div class="values">
+                      <input type="number" class="form-input value-input" id="hp-current" min="0" oninput="Sheet.markDirty()">
+                      <span class="separator">/</span>
+                      <span class="max-value" id="hp-max">0</span>
+                    </div>
+                  </div>
+                  <div class="status-box auto-calculated">
+                    <div class="label">PM (Poder)</div>
+                    <div class="values">
+                      <input type="number" class="form-input value-input" id="mp-current" min="0" oninput="Sheet.markDirty()">
+                      <span class="separator">/</span>
+                      <span class="max-value" id="mp-max">0</span>
+                    </div>
+                  </div>
+                  <div class="status-box">
+                    <div class="label">Sanidade</div>
+                    <div class="values">
+                      <input type="number" class="form-input value-input" id="san-current" min="0" oninput="Sheet.markDirty()">
+                      <span class="separator">/</span>
+                      <input type="number" class="form-input value-input" id="san-max" min="0" oninput="Sheet.markDirty()" style="width:40px; font-size:0.8rem;">
+                    </div>
+                  </div>
+                  <div class="status-box auto-calculated">
+                    <div class="label">Sorte</div>
+                    <div class="values">
+                      <span class="max-value" id="luck-value">0</span>
+                    </div>
+                  </div>
+                  <div class="status-box auto-calculated">
+                    <div class="label">MOV</div>
+                    <div class="values">
+                      <span class="max-value" id="mov-value">7</span>
+                    </div>
+                  </div>
+                  <div class="status-box auto-calculated">
+                    <div class="label">Dano Extra</div>
+                    <div class="values">
+                      <span class="max-value" id="damage-bonus">Nenhum</span>
+                    </div>
+                  </div>
+                  <div class="status-box auto-calculated">
+                    <div class="label">Corpo</div>
+                    <div class="values">
+                      <span class="max-value" id="build-value">0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Attributes -->
+            <div>
+              <div class="card">
+                <h2>Atributos</h2>
+                <div class="attributes-grid">
+                  <div class="attribute-box">
+                    <div class="attr-name">FOR</div>
+                    <input type="number" class="form-input attr-input" id="attr-str" min="1" max="99" oninput="Sheet.onAttrChange('str', this.value)">
+                    <div class="calc-row"><span>½: <span id="str-half">0</span></span><span>⅕: <span id="str-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">CON</div>
+                    <input type="number" class="form-input attr-input" id="attr-con" min="1" max="99" oninput="Sheet.onAttrChange('con', this.value)">
+                    <div class="calc-row"><span>½: <span id="con-half">0</span></span><span>⅕: <span id="con-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">TAM</div>
+                    <input type="number" class="form-input attr-input" id="attr-siz" min="1" max="99" oninput="Sheet.onAttrChange('siz', this.value)">
+                    <div class="calc-row"><span>½: <span id="siz-half">0</span></span><span>⅕: <span id="siz-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">DES</div>
+                    <input type="number" class="form-input attr-input" id="attr-dex" min="1" max="99" oninput="Sheet.onAttrChange('dex', this.value)">
+                    <div class="calc-row"><span>½: <span id="dex-half">0</span></span><span>⅕: <span id="dex-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">APA</div>
+                    <input type="number" class="form-input attr-input" id="attr-app" min="1" max="99" oninput="Sheet.onAttrChange('app', this.value)">
+                    <div class="calc-row"><span>½: <span id="app-half">0</span></span><span>⅕: <span id="app-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">EDU</div>
+                    <input type="number" class="form-input attr-input" id="attr-edu" min="1" max="99" oninput="Sheet.onAttrChange('edu', this.value)">
+                    <div class="calc-row"><span>½: <span id="edu-half">0</span></span><span>⅕: <span id="edu-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">INT</div>
+                    <input type="number" class="form-input attr-input" id="attr-int" min="1" max="99" oninput="Sheet.onAttrChange('int', this.value)">
+                    <div class="calc-row"><span>½: <span id="int-half">0</span></span><span>⅕: <span id="int-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">POD</div>
+                    <input type="number" class="form-input attr-input" id="attr-pow" min="1" max="99" oninput="Sheet.onAttrChange('pow', this.value)">
+                    <div class="calc-row"><span>½: <span id="pow-half">0</span></span><span>⅕: <span id="pow-fifth">0</span></span></div>
+                  </div>
+                  <div class="attribute-box">
+                    <div class="attr-name">SOR</div>
+                    <input type="number" class="form-input attr-input" id="attr-luck" min="1" max="99" oninput="Sheet.onAttrChange('luck', this.value)">
+                    <div class="calc-row"><span>½: <span id="luck-half">0</span></span><span>⅕: <span id="luck-fifth">0</span></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: SKILLS -->
+        <div class="tab-panel" id="tab-panel-skills">
+          <div class="skills-toolbar">
+            <div class="skills-search">
+              <input type="text" class="form-input" id="skill-search" placeholder="Buscar perícia..." oninput="Sheet.filterSkills(this.value)">
+            </div>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:0.85rem;color:var(--text-secondary);">
+              <input type="checkbox" id="show-trained-only" onchange="Sheet.filterSkills(document.getElementById('skill-search').value)">
+              Mostrar só treinadas
+            </label>
+          </div>
+          <div id="skills-container"></div>
+        </div>
+
+        <!-- TAB: INVENTORY -->
+        <div class="tab-panel" id="tab-panel-inventory">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0;">Inventário</h2>
+            <button class="btn btn-primary" onclick="Sheet.addInventoryItem()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Adicionar Item
+            </button>
+          </div>
+          <div class="inventory-list" id="inventory-list"></div>
+        </div>
+
+        <!-- TAB: WEAPONS -->
+        <div class="tab-panel" id="tab-panel-weapons">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0;">Armas</h2>
+            <button class="btn btn-primary" onclick="Sheet.addWeapon()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Adicionar Arma
+            </button>
+          </div>
+          <div class="weapons-list" id="weapons-list"></div>
+        </div>
+
+        <!-- TAB: MAGIC -->
+        <div class="tab-panel" id="tab-panel-magic">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0;">Magia</h2>
+            <button class="btn btn-primary" onclick="Sheet.addSpell()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Adicionar Magia
+            </button>
+          </div>
+          <div class="spells-list" id="spells-list"></div>
+        </div>
+
+        <!-- TAB: NOTES -->
+        <div class="tab-panel" id="tab-panel-notes">
+          <div class="notes-grid">
+            <!-- Left: Relationships -->
+            <div class="card">
+              <h2>Relacionamentos</h2>
+              <button class="btn btn-sm btn-primary" onclick="Sheet.addRelationship()" style="margin-bottom:12px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Adicionar Relação
+              </button>
+              <div class="relationships-list" id="relationships-list"></div>
+            </div>
+
+            <!-- Right: Personal Info -->
+            <div class="card">
+              <h2>Informações Pessoais</h2>
+              <div class="personal-info-section">
+                <div class="form-group">
+                  <label class="form-label">Local de Nascimento</label>
+                  <input type="text" class="form-input" id="info-birthplace" oninput="Sheet.markDirty()" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Local de Residência</label>
+                  <input type="text" class="form-input" id="info-residence" oninput="Sheet.markDirty()" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Patologia / Marcas</label>
+                  <input type="text" class="form-input" id="info-pathology" oninput="Sheet.markDirty()" placeholder="">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Traumas</label>
+                  <textarea class="form-textarea" id="info-trauma" oninput="Sheet.markDirty()" placeholder="" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Aparência</label>
+                  <textarea class="form-textarea" id="info-appearance" oninput="Sheet.markDirty()" placeholder="" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Ideologia / Crenças</label>
+                  <textarea class="form-textarea" id="info-ideology" oninput="Sheet.markDirty()" placeholder="" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Traços Importantes</label>
+                  <textarea class="form-textarea" id="info-traits" oninput="Sheet.markDirty()" placeholder="" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tornozelos / Objetos de Valor</label>
+                  <textarea class="form-textarea" id="info-valuables" oninput="Sheet.markDirty()" placeholder="" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Roupas / Roupagem</label>
+                  <textarea class="form-textarea" id="info-clothing" oninput="Sheet.markDirty()" placeholder="" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Full width: Game Notes -->
+            <div class="card game-notes-section">
+              <h2>Notas de Jogo</h2>
+              <textarea class="form-textarea" id="game-notes" oninput="Sheet.markDirty()" placeholder="Anotações livres, história, pistas, NPCs..." rows="6"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===========================
+   CONSTANTS & DATA
+   =========================== */
+const SKILLS_DATA = [
+  // Grupo: Combate
+  { group: 'Combate', id: 'heavy_weapons', name: 'Armas Pesadas', base: 10, attr: 'dex' },
+  { group: 'Combate', id: 'lance_flame', name: 'Lança-Chamas', base: 10, attr: 'dex' },
+  { group: 'Combate', id: 'machine_gun', name: 'Metralhadoras', base: 10, attr: 'dex' },
+  { group: 'Combate', id: 'chainsaw', name: 'Motosserras', base: 10, attr: 'dex' },
+  { group: 'Combate', id: 'axes', name: 'Machados', base: 15, attr: 'for' },
+  { group: 'Combate', id: 'garrote', name: 'Garrote', base: 15, attr: 'for' },
+  { group: 'Combate', id: 'whips', name: 'Chicotes', base: 5, attr: 'dex' },
+  { group: 'Combate', id: 'flails', name: 'Manguais', base: 10, attr: 'for' },
+  { group: 'Combate', id: 'spears', name: 'Lanças', base: 20, attr: 'dex' },
+  { group: 'Combate', id: 'swords', name: 'Espadas', base: 20, attr: 'dex' },
+  { group: 'Combate', id: 'handgun', name: 'Pistolas', base: 20, attr: 'dex' },
+  { group: 'Combate', id: 'rifle', name: 'Rifles', base: 25, attr: 'dex' },
+  { group: 'Combate', id: 'shotgun', name: 'Espingardas', base: 25, attr: 'dex' },
+  { group: 'Combate', id: 'submachine', name: 'Submetralhadoras', base: 15, attr: 'dex' },
+  { group: 'Combate', id: 'bows', name: 'Arcos', base: 15, attr: 'dex' },
+  { group: 'Combate', id: 'brawl', name: 'Briga', base: 25, attr: 'for' },
+  { group: 'Combate', id: 'throw', name: 'Arremessar', base: 20, attr: 'dex' },
+
+  // Grupo: Habilidades de Movimento
+  { group: 'Movimento', id: 'climb', name: 'Escalar', base: 20, attr: 'for' },
+  { group: 'Movimento', id: 'swim', name: 'Natação', base: 20, attr: 'for' },
+  { group: 'Movimento', id: 'jump', name: 'Saltar', base: 20, attr: 'for' },
+  { group: 'Movimento', id: 'stealth', name: 'Furtividade', base: 20, attr: 'dex' },
+  { group: 'Movimento', id: 'drive_car', name: 'Dirigir Automóveis', base: 20, attr: 'dex' },
+  { group: 'Movimento', id: 'pilot', name: 'Pilotar', base: 1, attr: 'edu' },
+  { group: 'Movimento', id: 'diving', name: 'Mergulho', base: 1, attr: 'con' },
+  { group: 'Movimento', id: 'navigate', name: 'Navegação', base: 10, attr: 'edu' },
+
+  // Grupo: Observação
+  { group: 'Observação', id: 'listen', name: 'Escutar', base: 20, attr: 'int' },
+  { group: 'Observação', id: 'spot_hidden', name: 'Encontrar', base: 25, attr: 'int' },
+  { group: 'Observação', id: 'track', name: 'Rastrear', base: 10, attr: 'int' },
+  { group: 'Observação', id: 'photography', name: 'Fotografia', base: 5, attr: 'int' },
+
+  // Grupo: Habilidades Sociais
+  { group: 'Social', id: 'charm', name: 'Charme', base: 15, attr: 'app' },
+  { group: 'Social', id: 'persuade', name: 'Persuasão', base: 10, attr: 'app' },
+  { group: 'Social', id: 'intimidate', name: 'Intimidação', base: 15, attr: 'for' },
+  { group: 'Social', id: 'disguise', name: 'Disfarce', base: 5, attr: 'app' },
+  { group: 'Social', id: 'fast_talk', name: 'Lábia', base: 5, attr: 'app' },
+  { group: 'Social', id: 'credit_rating', name: 'Nível de Crédito', base: 0, attr: 'app' },
+  { group: 'Social', id: 'ride', name: 'Cavalgar', base: 5, attr: 'app' },
+  { group: 'Social', id: 'act', name: 'Atuação', base: 5, attr: 'app' },
+
+  // Grupo: Habilidades Manuais
+  { group: 'Manual', id: 'dodge', name: 'Esquivar', base: 'half_dex', attr: 'dex', special: true },
+  { group: 'Manual', id: 'sleight', name: 'Prestidigitação', base: 10, attr: 'dex' },
+  { group: 'Manual', id: 'locksmith', name: 'Chaveiro', base: 1, attr: 'dex' },
+  { group: 'Manual', id: 'first_aid', name: 'Primeiros Socorros', base: 30, attr: 'edu' },
+  { group: 'Manual', id: 'heavy_machinery', name: 'Operar Maquinário Pesado', base: 1, attr: 'edu' },
+
+  // Grupo: Habilidades Intelectuais
+  { group: 'Intelectual', id: 'accounting', name: 'Contabilidade', base: 5, attr: 'int' },
+  { group: 'Intelectual', id: 'anthropology', name: 'Antropologia', base: 1, attr: 'int' },
+  { group: 'Intelectual', id: 'appraise', name: 'Avaliação', base: 5, attr: 'int' },
+  { group: 'Intelectual', id: 'forensics', name: 'Ciência Forense', base: 1, attr: 'int' },
+  { group: 'Intelectual', id: 'cryptography', name: 'Criptografia', base: 1, attr: 'int' },
+  { group: 'Intelectual', id: 'law', name: 'Direito', base: 5, attr: 'edu' },
+  { group: 'Intelectual', id: 'medicine', name: 'Medicina', base: 1, attr: 'edu' },
+  { group: 'Intelectual', id: 'psychoanalysis', name: 'Psicanálise', base: 1, attr: 'int' },
+  { group: 'Intelectual', id: 'psychology', name: 'Psicologia', base: 10, attr: 'int' },
+  { group: 'Intelectual', id: 'electronics', name: 'Eletrônica', base: 1, attr: 'edu' },
+  { group: 'Intelectual', id: 'electric_repair', name: 'Consertos Elétricos', base: 10, attr: 'edu' },
+  { group: 'Intelectual', id: 'mechanical_repair', name: 'Consertos Mecânicos', base: 10, attr: 'edu' },
+  { group: 'Intelectual', id: 'computer_use', name: 'Usar Computadores', base: 5, attr: 'int' },
+  { group: 'Intelectual', id: 'forgery', name: 'Falsificação', base: 5, attr: 'edu' },
+  { group: 'Intelectual', id: 'pharmacy', name: 'Farmácia', base: 1, attr: 'int' },
+
+  // Grupo: Conhecimento
+  { group: 'Conhecimento', id: 'art_craft', name: 'Belas Artes', base: 5, attr: 'edu' },
+  { group: 'Conhecimento', id: 'biology', name: 'Biologia', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'botany', name: 'Botânica', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'chemistry', name: 'Química', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'geology', name: 'Geologia', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'physics', name: 'Física', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'astronomy', name: 'Astronomia', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'meteorology', name: 'Meteorologia', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'history', name: 'História', base: 5, attr: 'edu' },
+  { group: 'Conhecimento', id: 'natural_world', name: 'Mundo Natural', base: 10, attr: 'int' },
+  { group: 'Conhecimento', id: 'survival', name: 'Sobrevivência', base: 10, attr: 'int' },
+  { group: 'Conhecimento', id: 'library_use', name: 'Usar Bibliotecas', base: 20, attr: 'int' },
+  { group: 'Conhecimento', id: 'mathematics', name: 'Matemática', base: 1, attr: 'int' },
+  { group: 'Conhecimento', id: 'engineering', name: 'Engenharia', base: 1, attr: 'edu' },
+  { group: 'Conhecimento', id: 'archaeology', name: 'Arqueologia', base: 1, attr: 'int' },
+
+  // Grupo: Ocultismo & Mythos
+  { group: 'Ocultismo & Mythos', id: 'occult', name: 'Ocultismo', base: 5, attr: 'edu' },
+  { group: 'Ocultismo & Mythos', id: 'cthulhu_mythos', name: 'Mythos de Cthulhu', base: 0, attr: 'int' },
+
+  // Grupo: Línguas
+  { group: 'Línguas', id: 'language_native', name: 'Língua (Nativa)', base: 'edu', attr: 'edu', special: true },
+  { group: 'Línguas', id: 'language_other', name: 'Língua (Outra)', base: 1, attr: 'edu' },
+
+  // Grupo: Zoologia
+  { group: 'Zoologia', id: 'zoology', name: 'Zoologia', base: 1, attr: 'int' },
+];
+
+const COMBAT_SKILLS = SKILLS_DATA.filter(s =>
+  ['heavy_weapons', 'lance_flame', 'machine_gun', 'chainsaw', 'axes',
+   'garrote', 'whips', 'flails', 'spears', 'swords', 'handgun', 'rifle', 'shotgun',
+   'submachine', 'bows', 'brawl', 'throw'].includes(s.id)
+);
+
+/* ===========================
+   UTILITIES
+   =========================== */
+function $(id) { return document.getElementById(id); }
+function $all(sel) { return document.querySelectorAll(sel); }
+
+function floorDiv(a, b) {
+  return Math.floor(Number(a) / b);
+}
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+function showToast(message, type = 'info', duration = 3000) {
+  const container = $('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icons = {
+    success: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
+    error: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+    info: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+  };
+  toast.innerHTML = (icons[type] || icons.info) + ' ' + message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    toast.style.transition = 'all 300ms';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+function showLoading(text = 'Carregando...') {
+  $('loadingText').textContent = text;
+  $('loadingOverlay').classList.add('active');
+}
+
+function hideLoading() {
+  $('loadingOverlay').classList.remove('active');
+}
+
+/* ===========================
+   CALCULATIONS
+   =========================== */
+function calcHP() {
+  const con = parseInt($('attr-con').value) || 0;
+  const siz = parseInt($('attr-siz').value) || 0;
+  return floorDiv(con + siz, 5);
+}
+
+function calcMP() {
+  const pow = parseInt($('attr-pow').value) || 0;
+  return floorDiv(pow, 5);
+}
+
+function calcLuck() {
+  const intel = parseInt($('attr-int').value) || 0;
+  return floorDiv(intel, 5);
+}
+
+function calcMOV() {
+  const dex = parseInt($('attr-dex').value) || 0;
+  const str = parseInt($('attr-str').value) || 0;
+  const siz = parseInt($('attr-siz').value) || 0;
+  if (dex < siz && str < siz) return 7;
+  if (str > siz && dex > siz) return 9;
+  return 8;
+}
+
+function calcDamageAndBuild() {
+  const str = parseInt($('attr-str').value) || 0;
+  const siz = parseInt($('attr-siz').value) || 0;
+  const total = str + siz;
+
+  if (total <= 64)  return { damage: '–2', build: -2 };
+  if (total <= 84)  return { damage: '–1', build: -1 };
+  if (total <= 124) return { damage: 'Nenhum', build: 0 };
+  if (total <= 164) return { damage: '+1D4', build: 1 };
+  if (total <= 204) return { damage: '+1D6', build: 2 };
+  if (total <= 284) return { damage: '+2D6', build: 3 };
+  if (total <= 364) return { damage: '+3D6', build: 4 };
+  if (total <= 444) return { damage: '+4D6', build: 5 };
+  if (total <= 524) return { damage: '+5D6', build: 6 };
+
+  const extra = Math.floor((total - 524) / 80);
+  return { damage: `+${5 + extra}D6*`, build: 6 + extra };
+}
+
+function calcAttrHalf(id) { return floorDiv(parseInt($(`attr-${id}`).value) || 0, 2); }
+function calcAttrFifth(id) { return floorDiv(parseInt($(`attr-${id}`).value) || 0, 5); }
+
+function getSkillValue(skillId) {
+  const data = Sheet.currentData;
+  return data && data.skills ? (parseInt(data.skills[skillId]) || 0) : 0;
+}
+
+function getSkillBase(skillDef) {
+  if (skillDef.special && skillDef.base === 'half_dex') {
+    return calcAttrHalf('dex');
+  }
+  if (skillDef.special && skillDef.base === 'edu') {
+    return parseInt($('attr-edu').value) || 0;
+  }
+  return skillDef.base;
+}
+
+/* ===========================
+   AUTH MODULE
+   =========================== */
+const Auth = {
+  isLocalMode: false,
+
+  login() {
+    const token = $('github-token').value.trim();
+    const username = $('github-username').value.trim();
+
+    if (!token) {
+      showToast('Insira seu token do GitHub', 'error');
+      return;
+    }
+
+    showLoading('Verificando token...');
+    fetch('https://api.github.com/gists', {
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    })
+    .then(r => {
+      if (!r.ok) throw new Error('Token inválido');
+      return r.json();
+    })
+    .then(() => {
+      localStorage.setItem('ck_token', btoa(token));
+      if (username) localStorage.setItem('ck_username', username);
+      Auth.isLocalMode = false;
+      hideLoading();
+      showToast('Login realizado com sucesso!', 'success');
+      Dashboard.load();
+    })
+    .catch(err => {
+      hideLoading();
+      showToast('Token inválido ou sem permissão de Gist', 'error');
+    });
+  },
+
+  loginLocal() {
+    Auth.isLocalMode = true;
+    localStorage.removeItem('ck_token');
+    localStorage.setItem('ck_username', $('github-username').value.trim() || 'Jogador Local');
+    showToast('Modo offline ativado', 'info');
+    Dashboard.load();
+  },
+
+  logout() {
+    if (!confirm('Tem certeza que deseja sair?')) return;
+    localStorage.removeItem('ck_token');
+    localStorage.removeItem('ck_username');
+    Auth.isLocalMode = false;
+    Sheet.currentData = null;
+    Sheet.currentGistId = null;
+    Auth.showLogin();
+  },
+
+  showLogin() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $('screen-login').classList.add('active');
+  },
+
+  getToken() {
+    try {
+      return atob(localStorage.getItem('ck_token') || '');
+    } catch { return null; }
+  },
+
+  getUsername() {
+    return localStorage.getItem('ck_username') || 'Jogador';
+  },
+
+  isLoggedIn() {
+    return Auth.isLocalMode || Auth.getToken();
+  }
+};
+
+/* ===========================
+   API MODULE
+   =========================== */
+const API = {
+  async listGists() {
+    const token = Auth.getToken();
+    if (!token) throw new Error('Sem token');
+    const r = await fetch('https://api.github.com/gists', {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error('Erro ao listar Gists');
+    return r.json();
+  },
+
+  async getGist(id) {
+    const token = Auth.getToken();
+    const r = await fetch(`https://api.github.com/gists/${id}`, {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!r.ok) throw new Error('Erro ao buscar Gist');
+    return r.json();
+  },
+
+  async createGist(data) {
+    const token = Auth.getToken();
+    const r = await fetch('https://api.github.com/gists', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        description: `CallKeeper - ${data.character.name || 'Sem nome'}`,
+        public: false,
+        files: {
+          'callkeeper.json': { content: JSON.stringify(data, null, 2) }
+        }
+      })
+    });
+    if (!r.ok) throw new Error('Erro ao criar Gist');
+    return r.json();
+  },
+
+  async updateGist(id, data) {
+    const token = Auth.getToken();
+    const r = await fetch(`https://api.github.com/gists/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        description: `CallKeeper - ${data.character.name || 'Sem nome'}`,
+        files: {
+          'callkeeper.json': { content: JSON.stringify(data, null, 2) }
+        }
+      })
+    });
+    if (!r.ok) throw new Error('Erro ao atualizar Gist');
+    return r.json();
+  },
+
+  async deleteGist(id) {
+    const token = Auth.getToken();
+    const r = await fetch(`https://api.github.com/gists/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    if (!r.ok) throw new Error('Erro ao deletar Gist');
+  }
+};
+
+/* ===========================
+   STORAGE MODULE
+   =========================== */
+const Storage = {
+  getSheets() {
+    const raw = localStorage.getItem('ck_sheets');
+    return raw ? JSON.parse(raw) : [];
+  },
+
+  saveSheets(sheets) {
+    localStorage.setItem('ck_sheets', JSON.stringify(sheets));
+  },
+
+  async listSheets() {
+    if (Auth.isLocalMode) {
+      return Storage.getSheets().map(s => ({
+        id: s.id,
+        name: s.character?.name || 'Sem nome',
+        occupation: s.character?.occupation || '',
+        lastModified: s.last_modified
+      }));
+    }
+
+    try {
+      const gists = await API.listGists();
+      const sheets = [];
+      for (const g of gists) {
+        if (g.files && g.files['callkeeper.json']) {
+          sheets.push({
+            id: g.id,
+            name: g.description.replace('CallKeeper - ', '') || 'Sem nome',
+            lastModified: g.updated_at
+          });
+        }
+      }
+      return sheets;
+    } catch (e) {
+      showToast('Erro ao carregar fichas do GitHub', 'error');
+      return [];
+    }
+  },
+
+  async loadSheet(gistId) {
+    if (Auth.isLocalMode) {
+      const sheets = Storage.getSheets();
+      return sheets.find(s => s.id === gistId);
+    }
+
+    try {
+      const gist = await API.getGist(gistId);
+      if (gist.files && gist.files['callkeeper.json']) {
+        return JSON.parse(gist.files['callkeeper.json'].content);
+      }
+    } catch (e) {
+      showToast('Erro ao carregar ficha', 'error');
+    }
+    return null;
+  },
+
+  async saveSheet(gistId, data) {
+    data.last_modified = new Date().toISOString();
+    data.callkeeper_version = '1.0';
+
+    if (Auth.isLocalMode) {
+      let sheets = Storage.getSheets();
+      const idx = sheets.findIndex(s => s.id === gistId);
+      if (idx >= 0) sheets[idx] = data;
+      else sheets.push(data);
+      Storage.saveSheets(sheets);
+      return;
+    }
+
+    if (gistId) {
+      await API.updateGist(gistId, data);
+    } else {
+      const result = await API.createGist(data);
+      Sheet.currentGistId = result.id;
+    }
+  },
+
+  async deleteSheet(gistId) {
+    if (Auth.isLocalMode) {
+      let sheets = Storage.getSheets().filter(s => s.id !== gistId);
+      Storage.saveSheets(sheets);
+      return;
+    }
+    await API.deleteGist(gistId);
+  }
+};
+
+/* ===========================
+   DASHBOARD MODULE
+   =========================== */
+const Dashboard = {
+  async load() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $('screen-dashboard').classList.add('active');
+    $('user-display-name').textContent = Auth.getUsername();
+
+    showLoading('Carregando fichas...');
+    const sheets = await Storage.listSheets();
+    hideLoading();
+
+    const select = $('fiches-select');
+    select.innerHTML = '<option value="">— Selecione uma ficha —</option>';
+    sheets.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = `${s.name}${s.occupation ? ' (' + s.occupation + ')' : ''}`;
+      select.appendChild(opt);
+    });
+
+    const content = $('dashboard-content');
+    if (sheets.length === 0) {
+      content.innerHTML = `
+        <div class="no-sheet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <h3>Nenhuma ficha encontrada</h3>
+          <p>Clique em "Nova Ficha" para criar sua primeira ficha.</p>
+          <button class="btn btn-primary" onclick="Dashboard.newSheet()" style="margin-top:12px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Criar Nova Ficha
+          </button>
+        </div>`;
+      $('btn-delete-sheet').style.display = 'none';
+    } else {
+      content.innerHTML = `<p style="color:var(--text-muted);font-style:italic;">Selecione uma ficha acima para editar.</p>`;
+      $('btn-delete-sheet').style.display = '';
+    }
+  },
+
+  selectSheet(gistId) {
+    if (!gistId) return;
+    Sheet.load(gistId);
+  },
+
+  async newSheet() {
+    showLoading('Criando ficha...');
+    const newData = Sheet.createEmptyData();
+    newData.character.name = 'Novo Personagem';
+    newData.character.player = Auth.getUsername();
+
+    try {
+      if (Auth.isLocalMode) {
+        const id = generateId();
+        newData.id = id;
+        await Storage.saveSheet(id, newData);
+        hideLoading();
+        Sheet.load(id);
+      } else {
+        const result = await API.createGist(newData);
+        Sheet.currentGistId = result.id;
+        hideLoading();
+        Sheet.load(result.id);
+      }
+    } catch (e) {
+      hideLoading();
+      showToast('Erro ao criar ficha: ' + e.message, 'error');
+    }
+  },
+
+  async deleteSheet() {
+    const gistId = $('fiches-select').value;
+    if (!gistId) return;
+    if (!confirm('Tem certeza que deseja excluir esta ficha? Esta ação não pode ser desfeita.')) return;
+
+    showLoading('Excluindo ficha...');
+    try {
+      await Storage.deleteSheet(gistId);
+      hideLoading();
+      showToast('Ficha excluída', 'success');
+      Dashboard.load();
+    } catch (e) {
+      hideLoading();
+      showToast('Erro ao excluir: ' + e.message, 'error');
+    }
+  }
+};
+
+/* ===========================
+   SHEET MODULE
+   =========================== */
+const Sheet = {
+  currentGistId: null,
+  currentData: null,
+  saveDebounceTimer: null,
+  isDirty: false,
+
+  createEmptyData() {
+    const skills = {};
+    SKILLS_DATA.forEach(s => { skills[s.id] = 0; });
+    return {
+      callkeeper_version: '1.0',
+      last_modified: new Date().toISOString(),
+      character: {
+        name: '',
+        player: Auth.getUsername(),
+        occupation: '',
+        age: '',
+        image: '',
+        status: {
+          hp_current: 0, hp_max: 0,
+          mp_current: 0, mp_max: 0,
+          sanity_current: 0, sanity_max: 99,
+          luck: 0
+        },
+        attributes: { str: 50, con: 50, siz: 50, dex: 50, app: 50, edu: 50, int: 50, pow: 50, luck: 50 },
+        skills: skills,
+        inventory: [],
+        weapons: [],
+        spells: [],
+        relationships: [],
+        personal_info: {
+          birthplace: '', residence: '', pathology: '', trauma: '',
+          appearance: '', ideology: '', traits: '', valuables: '', clothing: ''
+        },
+        game_notes: ''
+      }
+    };
+  },
+
+  async load(gistId) {
+    showLoading('Carregando ficha...');
+    const data = await Storage.loadSheet(gistId);
+    hideLoading();
+
+    if (!data) {
+      showToast('Não foi possível carregar a ficha', 'error');
+      return;
+    }
+
+    Sheet.currentGistId = gistId;
+    Sheet.currentData = data;
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $('screen-sheet').classList.add('active');
+
+    Sheet.populateUI();
+    Sheet.switchTab('principal');
+    Sheet.renderSkills();
+
+    this.updateCharName();
+    this.updateSaveIndicator('saved', 'Salvo');
+  },
+
+  populateUI() {
+    const c = this.currentData.character;
+
+    // Basic info
+    $('player-name').value = c.player || '';
+    $('char-name').value = c.name || '';
+    $('occupation').value = c.occupation || '';
+    $('age').value = c.age || '';
+
+    // Image
+    if (c.image) {
+      $('character-image').src = c.image;
+      $('character-image').style.display = '';
+      $('image-placeholder').style.display = 'none';
+    } else {
+      $('character-image').style.display = 'none';
+      $('image-placeholder').style.display = '';
+    }
+
+    // Status
+    const s = c.status || {};
+    $('hp-current').value = s.hp_current || 0;
+    $('mp-current').value = s.mp_current || 0;
+    $('san-current').value = s.sanity_current || 0;
+    $('san-max').value = s.sanity_max || 99;
+
+    // Attributes
+    const attrs = c.attributes || {};
+    const attrMap = { str: 'attr-str', con: 'attr-con', siz: 'attr-siz', dex: 'attr-dex', app: 'attr-app', edu: 'attr-edu', int: 'attr-int', pow: 'attr-pow', luck: 'attr-luck' };
+    Object.entries(attrMap).forEach(([k, id]) => {
+      $(id).value = attrs[k] || 50;
+    });
+
+    // Recalculate status
+    this.recalcAll();
+
+    // Inventory
+    this.renderInventory();
+
+    // Weapons
+    this.renderWeapons();
+
+    // Spells
+    this.renderSpells();
+
+    // Relationships
+    this.renderRelationships();
+
+    // Personal info
+    const pi = c.personal_info || {};
+    $('info-birthplace').value = pi.birthplace || '';
+    $('info-residence').value = pi.residence || '';
+    $('info-pathology').value = pi.pathology || '';
+    $('info-trauma').value = pi.trauma || '';
+    $('info-appearance').value = pi.appearance || '';
+    $('info-ideology').value = pi.ideology || '';
+    $('info-traits').value = pi.traits || '';
+    $('info-valuables').value = pi.valuables || '';
+    $('info-clothing').value = pi.clothing || '';
+
+    // Game notes
+    $('game-notes').value = c.game_notes || '';
+  },
+
+  onAttrChange(attrId, value) {
+    this.markDirty();
+    const v = parseInt(value) || 0;
+    const half = floorDiv(v, 2);
+    const fifth = floorDiv(v, 5);
+    const halfEl = $(`${attrId}-half`);
+    const fifthEl = $(`${attrId}-fifth`);
+    if (halfEl) halfEl.textContent = half;
+    if (fifthEl) fifthEl.textContent = fifth;
+    this.recalcAll();
+
+    // Special: native language follows EDU
+    if (attrId === 'edu') {
+      const nativeSkill = document.querySelector('[data-skill="language_native"]');
+      if (nativeSkill) {
+        nativeSkill.dataset.base = v;
+        nativeSkill.querySelector('.skill-base').textContent = `(=${v})`;
+      }
+    }
+
+    // Special: dodge follows DEX half
+    const dodgeEl = document.querySelector('[data-skill="dodge"]');
+    if (dodgeEl && attrId === 'dex') {
+      dodgeEl.dataset.base = half;
+      dodgeEl.querySelector('.skill-base').textContent = `(½DES=${half})`;
+    }
+  },
+
+  recalcAll() {
+    const hp = calcHP();
+    const mp = calcMP();
+    const luck = calcLuck();
+    const mov = calcMOV();
+    const { damage, build } = calcDamageAndBuild();
+
+    $('hp-max').textContent = hp;
+    $('mp-max').textContent = mp;
+    $('luck-value').textContent = luck;
+    $('mov-value').textContent = mov;
+    $('damage-bonus').textContent = damage;
+    $('build-value').textContent = build;
+
+    // Update max HP in status if current > max
+    const hpCurrent = parseInt($('hp-current').value) || 0;
+    if (hpCurrent > hp) $('hp-current').value = hp;
+
+    const mpCurrent = parseInt($('mp-current').value) || 0;
+    if (mpCurrent > mp) $('mp-current').value = mp;
+
+    // Update all skill base displays for special skills
+    const dex = parseInt($('attr-dex').value) || 0;
+    const edu = parseInt($('attr-edu').value) || 0;
+
+    // Update dodge base display
+    document.querySelectorAll('[data-skill="dodge"] .skill-base').forEach(el => {
+      el.textContent = `(½DES=${floorDiv(dex, 2)})`;
+    });
+    document.querySelectorAll('[data-skill="language_native"] .skill-base').forEach(el => {
+      el.textContent = `(=EDU=${edu})`;
+    });
+  },
+
+  switchTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+    $('tab-panel-' + tabName).classList.add('active');
+  },
+
+  updateCharName() {
+    const name = $('char-name').value || 'Personagem';
+    $('sheet-header-name').textContent = name;
+  },
+
+  markDirty() {
+    this.isDirty = true;
+    this.updateSaveIndicator('saving', 'Salvando...');
+    clearTimeout(this.saveDebounceTimer);
+    this.saveDebounceTimer = setTimeout(() => this.save(), 2000);
+    this.collectData();
+  },
+
+  updateSaveIndicator(state, text) {
+    const el = $('save-indicator');
+    el.className = 'save-indicator ' + state;
+    el.innerHTML = state === 'saving'
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>' + text + '</span>'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>' + text + '</span>';
+  },
+
+  collectData() {
+    if (!this.currentData) return;
+    const c = this.currentData.character;
+
+    c.player = $('player-name').value;
+    c.name = $('char-name').value;
+    c.occupation = $('occupation').value;
+    c.age = $('age').value;
+
+    c.status = {
+      hp_current: parseInt($('hp-current').value) || 0,
+      hp_max: parseInt($('hp-max').textContent) || 0,
+      mp_current: parseInt($('mp-current').value) || 0,
+      mp_max: parseInt($('mp-max').textContent) || 0,
+      sanity_current: parseInt($('san-current').value) || 0,
+      sanity_max: parseInt($('san-max').value) || 99,
+      luck: parseInt($('luck-value').textContent) || 0
+    };
+
+    c.attributes = {
+      str: parseInt($('attr-str').value) || 0,
+      con: parseInt($('attr-con').value) || 0,
+      siz: parseInt($('attr-siz').value) || 0,
+      dex: parseInt($('attr-dex').value) || 0,
+      app: parseInt($('attr-app').value) || 0,
+      edu: parseInt($('attr-edu').value) || 0,
+      int: parseInt($('attr-int').value) || 0,
+      pow: parseInt($('attr-pow').value) || 0,
+      luck: parseInt($('attr-luck').value) || 0
+    };
+
+    c.personal_info = {
+      birthplace: $('info-birthplace').value,
+      residence: $('info-residence').value,
+      pathology: $('info-pathology').value,
+      trauma: $('info-trauma').value,
+      appearance: $('info-appearance').value,
+      ideology: $('info-ideology').value,
+      traits: $('info-traits').value,
+      valuables: $('info-valuables').value,
+      clothing: $('info-clothing').value
+    };
+
+    c.game_notes = $('game-notes').value;
+  },
+
+  async save() {
+    this.collectData();
+    try {
+      await Storage.saveSheet(this.currentGistId, this.currentData);
+      this.updateSaveIndicator('saved', 'Salvo');
+      showToast('Ficha salva automaticamente', 'success', 2000);
+    } catch (e) {
+      this.updateSaveIndicator('saving', 'Erro ao salvar');
+      showToast('Erro ao salvar: ' + e.message, 'error');
+    }
+  },
+
+  backToDashboard() {
+    if (this.isDirty) {
+      this.save();
+    }
+    this.currentData = null;
+    this.currentGistId = null;
+    Dashboard.load();
+  },
+
+  /* ---- Image Upload ---- */
+  handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      showToast('Imagem muito grande (máx 2MB)', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Resize to 512x512
+        const canvas = document.createElement('canvas');
+        const size = 512;
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // Square crop from center
+        const minDim = Math.min(img.width, img.height);
+        const sx = (img.width - minDim) / 2;
+        const sy = (img.height - minDim) / 2;
+        ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+        const resized = canvas.toDataURL('image/jpeg', 0.8);
+        $('character-image').src = resized;
+        $('character-image').style.display = '';
+        $('image-placeholder').style.display = 'none';
+
+        if (this.currentData) {
+          this.currentData.character.image = resized;
+          this.markDirty();
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  },
+
+  clearImage() {
+    $('character-image').src = '';
+    $('character-image').style.display = 'none';
+    $('image-placeholder').style.display = '';
+    if (this.currentData) {
+      this.currentData.character.image = '';
+      this.markDirty();
+    }
+  },
+
+  /* ---- Skills ---- */
+  renderSkills() {
+    const container = $('skills-container');
+    container.innerHTML = '';
+
+    // Group skills
+    const groups = {};
+    SKILLS_DATA.forEach(s => {
+      if (!groups[s.group]) groups[s.group] = [];
+      groups[s.group].push(s);
+    });
+
+    // Render each group
+    Object.entries(groups).forEach(([groupName, skills]) => {
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'skill-group';
+
+      const title = document.createElement('div');
+      title.className = 'skill-group-title';
+      title.textContent = groupName;
+      groupDiv.appendChild(title);
+
+      const table = document.createElement('table');
+      table.className = 'skills-table';
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th style="width:40%">Perícia</th>
+            <th>Valor</th>
+            <th>½</th>
+            <th>⅕</th>
+          </tr>
+        </thead>
+        <tbody></tbody>`;
+
+      const tbody = table.querySelector('tbody');
+
+      skills.forEach(skill => {
+        const skillValue = this.currentData?.character?.skills?.[skill.id] || 0;
+
+        let displayBase = skill.base;
+        if (skill.special && skill.base === 'half_dex') {
+          const dex = parseInt($('attr-dex').value) || 50;
+          displayBase = floorDiv(dex, 2);
+        }
+        if (skill.special && skill.base === 'edu') {
+          const edu = parseInt($('attr-edu').value) || 50;
+          displayBase = edu;
+        }
+
+        const half = floorDiv(skillValue, 2);
+        const fifth = floorDiv(skillValue, 5);
+
+        const tr = document.createElement('tr');
+        tr.dataset.skill = skill.id;
+        tr.dataset.base = displayBase;
+        tr.dataset.group = groupName.toLowerCase();
+
+        let baseLabel = '';
+        if (skill.special && skill.base === 'half_dex') baseLabel = `(½DES=${displayBase})`;
+        else if (skill.special && skill.base === 'edu') baseLabel = `(=EDU=${displayBase})`;
+        else baseLabel = `(${displayBase}%)`;
+
+        tr.innerHTML = `
+          <td>${skill.name} <span class="skill-base" style="color:var(--text-muted);font-size:0.7rem;font-family:var(--font-mono);">${baseLabel}</span></td>
+          <td>
+            <div class="skill-input-wrap">
+              <input type="number" class="form-input skill-input"
+                value="${skillValue}" min="0" max="999"
+                data-skill-id="${skill.id}"
+                oninput="Sheet.onSkillChange('${skill.id}', this.value)">
+            </div>
+          </td>
+          <td style="text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-secondary);">${half}</td>
+          <td style="text-align:center;font-family:var(--font-mono);font-size:0.8rem;color:var(--text-secondary);">${fifth}</td>`;
+
+        tbody.appendChild(tr);
+      });
+
+      groupDiv.appendChild(table);
+      container.appendChild(groupDiv);
+    });
+  },
+
+  onSkillChange(skillId, value) {
+    const v = parseInt(value) || 0;
+    const half = floorDiv(v, 2);
+    const fifth = floorDiv(v, 5);
+
+    const row = document.querySelector(`tr[data-skill="${skillId}"]`);
+    if (row) {
+      const tds = row.querySelectorAll('td');
+      if (tds[2]) tds[2].textContent = half;
+      if (tds[3]) tds[3].textContent = fifth;
+    }
+
+    if (this.currentData) {
+      this.currentData.character.skills[skillId] = v;
+      this.markDirty();
+    }
+  },
+
+  filterSkills(query) {
+    query = query.toLowerCase().trim();
+    const showTrained = $('show-trained-only').checked;
+
+    document.querySelectorAll('#skills-container tr[data-skill]').forEach(row => {
+      const skillId = row.dataset.skill;
+      const skillName = row.querySelector('td').textContent.toLowerCase().split('(')[0].trim();
+      const value = parseInt(row.querySelector('.skill-input').value) || 0;
+      const base = parseInt(row.dataset.base) || 0;
+
+      let match = skillName.includes(query);
+      if (showTrained) match = match && value > base;
+
+      row.style.display = match ? '' : 'none';
+    });
+  },
+
+  /* ---- Inventory ---- */
+  renderInventory() {
+    const list = $('inventory-list');
+    const items = this.currentData?.character?.inventory || [];
+
+    list.innerHTML = items.length === 0
+      ? '<p style="color:var(--text-muted);font-style:italic;text-align:center;padding:20px;">Nenhum item ainda. Clique em "Adicionar Item".</p>'
+      : '';
+
+    items.forEach((item, idx) => {
+      list.appendChild(this.createInventoryItemEl(item, idx));
+    });
+  },
+
+  createInventoryItemEl(item, idx) {
+    const el = document.createElement('div');
+    el.className = 'inventory-item';
+    el.dataset.idx = idx;
+    el.innerHTML = `
+      <input type="checkbox" class="carry-check" ${item.carried ? 'checked' : ''}
+        onchange="Sheet.toggleInventoryItem(${idx})">
+      <div class="item-fields">
+        <input type="text" class="form-input item-name-input" value="${this.esc(item.name)}"
+          placeholder="Nome do item" oninput="Sheet.updateInventoryItem(${idx}, 'name', this.value)">
+        <textarea class="form-textarea item-desc-input" rows="2"
+          placeholder="Descrição do item" oninput="Sheet.updateInventoryItem(${idx}, 'description', this.value)">${this.esc(item.description || '')}</textarea>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-icon btn-danger" onclick="Sheet.removeInventoryItem(${idx})" title="Remover">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>`;
+    return el;
+  },
+
+  addInventoryItem() {
+    if (!this.currentData) return;
+    if (!this.currentData.character.inventory) this.currentData.character.inventory = [];
+    const item = { id: generateId(), name: '', description: '', carried: false };
+    this.currentData.character.inventory.push(item);
+    this.renderInventory();
+    this.markDirty();
+  },
+
+  toggleInventoryItem(idx) {
+    if (!this.currentData) return;
+    const checkbox = document.querySelectorAll('.inventory-item')[idx]?.querySelector('.carry-check');
+    this.currentData.character.inventory[idx].carried = checkbox ? checkbox.checked : false;
+    this.markDirty();
+  },
+
+  updateInventoryItem(idx, field, value) {
+    if (!this.currentData) return;
+    this.currentData.character.inventory[idx][field] = value;
+    this.markDirty();
+  },
+
+  removeInventoryItem(idx) {
+    if (!this.currentData) return;
+    this.currentData.character.inventory.splice(idx, 1);
+    this.renderInventory();
+    this.markDirty();
+  },
+
+  /* ---- Weapons ---- */
+  renderWeapons() {
+    const list = $('weapons-list');
+    const weapons = this.currentData?.character?.weapons || [];
+
+    list.innerHTML = weapons.length === 0
+      ? '<p style="color:var(--text-muted);font-style:italic;text-align:center;padding:20px;">Nenhuma arma ainda. Clique em "Adicionar Arma".</p>'
+      : '';
+
+    weapons.forEach((w, idx) => {
+      list.appendChild(this.createWeaponEl(w, idx));
+    });
+  },
+
+  createWeaponEl(weapon, idx) {
+    const el = document.createElement('div');
+    el.className = 'weapon-card';
+    el.dataset.idx = idx;
+
+    let options = '<option value="">— Selecione —</option>';
+    COMBAT_SKILLS.forEach(s => {
+      options += `<option value="${s.id}" ${weapon.skill === s.id ? 'selected' : ''}>${s.name}</option>`;
+    });
+
+    el.innerHTML = `
+      <div class="weapon-header">
+        <input type="text" class="weapon-name-input" value="${this.esc(weapon.name)}"
+          placeholder="Nome da arma" oninput="Sheet.updateWeapon(${idx}, 'name', this.value)">
+        <button class="btn btn-icon btn-danger" onclick="Sheet.removeWeapon(${idx})" title="Remover arma">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+      <div class="weapon-grid">
+        <div class="form-group">
+          <label class="form-label">Perícia</label>
+          <select class="form-select" onchange="Sheet.updateWeapon(${idx}, 'skill', this.value)">${options}</select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dano</label>
+          <input type="text" class="form-input" value="${this.esc(weapon.damage)}"
+            placeholder="1D6" oninput="Sheet.updateWeapon(${idx}, 'damage', this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Munição</label>
+          <input type="text" class="form-input" value="${this.esc(weapon.ammo)}"
+            placeholder="— / —" oninput="Sheet.updateWeapon(${idx}, 'ammo', this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Usos/Rodada</label>
+          <input type="number" class="form-input" value="${weapon.attacks_per_round || 1}" min="0"
+            oninput="Sheet.updateWeapon(${idx}, 'attacks_per_round', this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Alcance</label>
+          <input type="text" class="form-input" value="${this.esc(weapon.range)}"
+            placeholder="— metros" oninput="Sheet.updateWeapon(${idx}, 'range', this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Defeito</label>
+          <input type="text" class="form-input" value="${this.esc(weapon.malfunction)}"
+            placeholder="Nenhum" oninput="Sheet.updateWeapon(${idx}, 'malfunction', this.value)">
+        </div>
+      </div>`;
+    return el;
+  },
+
+  addWeapon() {
+    if (!this.currentData) return;
+    if (!this.currentData.character.weapons) this.currentData.character.weapons = [];
+    const weapon = { id: generateId(), name: '', skill: '', damage: '', ammo: '', attacks_per_round: 1, range: '', malfunction: '' };
+    this.currentData.character.weapons.push(weapon);
+    this.renderWeapons();
+    this.markDirty();
+  },
+
+  updateWeapon(idx, field, value) {
+    if (!this.currentData) return;
+    this.currentData.character.weapons[idx][field] = value;
+    this.markDirty();
+  },
+
+  removeWeapon(idx) {
+    if (!this.currentData) return;
+    this.currentData.character.weapons.splice(idx, 1);
+    this.renderWeapons();
+    this.markDirty();
+  },
+
+  /* ---- Spells ---- */
+  renderSpells() {
+    const list = $('spells-list');
+    const spells = this.currentData?.character?.spells || [];
+
+    list.innerHTML = spells.length === 0
+      ? '<p style="color:var(--text-muted);font-style:italic;text-align:center;padding:20px;">Nenhuma magia ainda. Clique em "Adicionar Magia".</p>'
+      : '';
+
+    spells.forEach((spell, idx) => {
+      list.appendChild(this.createSpellEl(spell, idx));
+    });
+  },
+
+  createSpellEl(spell, idx) {
+    const el = document.createElement('div');
+    el.className = 'spell-card';
+    el.dataset.idx = idx;
+    const isPM = spell.cost_type !== 'san';
+
+    el.innerHTML = `
+      <div class="spell-header">
+        <input type="text" class="spell-name-input" value="${this.esc(spell.name)}"
+          placeholder="Nome da magia" oninput="Sheet.updateSpell(${idx}, 'name', this.value)">
+        <div class="spell-cost-group">
+          <input type="number" class="form-input" value="${spell.cost_value || 0}" min="0"
+            style="width:70px" oninput="Sheet.updateSpell(${idx}, 'cost_value', this.value)">
+          <div class="cost-toggle-group">
+            <button class="cost-toggle-btn ${isPM ? 'active' : ''}"
+              onclick="Sheet.setSpellCostType(${idx}, 'mp', this)">PM</button>
+            <button class="cost-toggle-btn ${!isPM ? 'active' : ''}"
+              onclick="Sheet.setSpellCostType(${idx}, 'san', this)">SAN</button>
+          </div>
+        </div>
+        <button class="btn btn-icon btn-danger" onclick="Sheet.removeSpell(${idx})" title="Remover magia">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+      <div class="spell-grid">
+        <div class="form-group">
+          <label class="form-label">Tempo de Conjuração</label>
+          <input type="text" class="form-input" value="${this.esc(spell.casting_time)}"
+            placeholder="Ex: 1 rodada" oninput="Sheet.updateSpell(${idx}, 'casting_time', this.value)">
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label class="form-label">Descrição do Feitiço</label>
+          <textarea class="form-textarea" rows="3"
+            placeholder="Descrição e efeitos da magia..."
+            oninput="Sheet.updateSpell(${idx}, 'description', this.value)">${this.esc(spell.description || '')}</textarea>
+        </div>
+      </div>`;
+    return el;
+  },
+
+  addSpell() {
+    if (!this.currentData) return;
+    if (!this.currentData.character.spells) this.currentData.character.spells = [];
+    const spell = { id: generateId(), name: '', cost_type: 'mp', cost_value: 0, casting_time: '', description: '' };
+    this.currentData.character.spells.push(spell);
+    this.renderSpells();
+    this.markDirty();
+  },
+
+  updateSpell(idx, field, value) {
+    if (!this.currentData) return;
+    this.currentData.character.spells[idx][field] = value;
+    this.markDirty();
+  },
+
+  setSpellCostType(idx, type, btn) {
+    if (!this.currentData) return;
+    this.currentData.character.spells[idx].cost_type = type;
+    btn.parentElement.querySelectorAll('.cost-toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    this.markDirty();
+  },
+
+  removeSpell(idx) {
+    if (!this.currentData) return;
+    this.currentData.character.spells.splice(idx, 1);
+    this.renderSpells();
+    this.markDirty();
+  },
+
+  /* ---- Relationships ---- */
+  renderRelationships() {
+    const list = $('relationships-list');
+    const rels = this.currentData?.character?.relationships || [];
+
+    list.innerHTML = '';
+
+    if (rels.length === 0) {
+      list.innerHTML = '<p style="color:var(--text-muted);font-style:italic;font-size:0.85rem;">Nenhum relacionamento adicionado.</p>';
+    }
+
+    rels.forEach((r, idx) => {
+      list.appendChild(this.createRelationEl(r, idx));
+    });
+  },
+
+  createRelationEl(rel, idx) {
+    const el = document.createElement('div');
+    el.className = 'relation-card';
+    el.innerHTML = `
+      <div class="relation-header">
+        <span style="font-family:var(--font-title);color:var(--accent-primary);font-size:0.9rem;">Relacionamento ${idx + 1}</span>
+        <button class="btn btn-icon btn-danger btn-sm" onclick="Sheet.removeRelationship(${idx})" title="Remover">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+      <div class="relation-fields">
+        <div class="form-group">
+          <label class="form-label">Nome</label>
+          <input type="text" class="form-input" value="${this.esc(rel.name)}"
+            placeholder="Nome da pessoa" oninput="Sheet.updateRelationship(${idx}, 'name', this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Relação</label>
+          <input type="text" class="form-input" value="${this.esc(rel.relation)}"
+            placeholder="Amigo, inimigo..." oninput="Sheet.updateRelationship(${idx}, 'relation', this.value)">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Notas</label>
+          <textarea class="form-textarea" rows="2"
+            placeholder="Notas sobre o relacionamento..."
+            oninput="Sheet.updateRelationship(${idx}, 'notes', this.value)">${this.esc(rel.notes || '')}</textarea>
+        </div>
+      </div>`;
+    return el;
+  },
+
+  addRelationship() {
+    if (!this.currentData) return;
+    if (!this.currentData.character.relationships) this.currentData.character.relationships = [];
+    const rel = { id: generateId(), name: '', relation: '', notes: '' };
+    this.currentData.character.relationships.push(rel);
+    this.renderRelationships();
+    this.markDirty();
+  },
+
+  updateRelationship(idx, field, value) {
+    if (!this.currentData) return;
+    this.currentData.character.relationships[idx][field] = value;
+    this.markDirty();
+  },
+
+  removeRelationship(idx) {
+    if (!this.currentData) return;
+    this.currentData.character.relationships.splice(idx, 1);
+    this.renderRelationships();
+    this.markDirty();
+  },
+
+  /* ---- Helper ---- */
+  esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+};
+
+/* ===========================
+   BOOTSTRAP
+   =========================== */
+(function init() {
+  // Handle Enter key on login form
+  $('github-token').addEventListener('keypress', e => { if (e.key === 'Enter') Auth.login(); });
+  $('github-username').addEventListener('keypress', e => { if (e.key === 'Enter') Auth.login(); });
+
+  // Check if already logged in
+  if (Auth.isLoggedIn()) {
+    Dashboard.load();
+  } else {
+    Auth.showLogin();
+  }
+
+  // Initialize attribute displays with default values
+  const attrs = ['str', 'con', 'siz', 'dex', 'app', 'edu', 'int', 'pow', 'luck'];
+  attrs.forEach(a => {
+    const el = $(`attr-${a}`);
+    if (el && !el.value) el.value = 50;
+    const half = floorDiv(parseInt(el?.value) || 50, 2);
+    const fifth = floorDiv(parseInt(el?.value) || 50, 5);
+    const hEl = $(`${a}-half`);
+    const fEl = $(`${a}-fifth`);
+    if (hEl) hEl.textContent = half;
+    if (fEl) fEl.textContent = fifth;
+  });
+})();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a054d4bd5a17f63a',t:'MTc4MDM4NjI0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
