@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Ficha - Arkham Sheets</title>
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/ficha.css"
+>
+```
+
+</head>
+
+<body>
+
+```
+<div class="background-overlay"></div>
+
+<main class="sheet-container">
+
+    <header class="sheet-header">
+
+        <h1>Ficha de Investigador</h1>
+
+        <div>
+
+            <button id="saveSheetButton">
+                Salvar Ficha
+            </button>
+
+            <button id="backButton">
+                Dashboard
+            </button>
+
+        </div>
+
+    </header>
+
+    <nav class="tabs">
+
+        <button class="tab-button active" data-tab="geral">
+            Geral
+        </button>
+
+        <button class="tab-button" data-tab="pericias">
+            Perícias
+        </button>
+
+        <button class="tab-button" data-tab="inventario">
+            Inventário
+        </button>
+
+        <button class="tab-button" data-tab="armas">
+            Armas
+        </button>
+
+        <button class="tab-button" data-tab="magias">
+            Magias
+        </button>
+
+        <button class="tab-button" data-tab="relacoes">
+            Relações
+        </button>
+
+    </nav>
+
+    <!-- GERAL -->
+
+    <section
+        id="geral"
+        class="tab-content active"
+    >
+
+        <h2>Dados Básicos</h2>
+
+        <div class="grid-2">
+
+            <div>
+
+                <label>Jogador</label>
+                <input id="jogador">
+
+                <label>Personagem</label>
+                <input id="personagem">
+
+                <label>Idade</label>
+                <input
+                    type="number"
+                    id="idade"
+                >
+
+                <label>Profissão</label>
+                <input id="profissao">
+
+            </div>
+
+            <div>
+
+                <label>Imagem</label>
+
+                <input
+                    type="file"
+                    id="imagemPersonagem"
+                    accept="image/*"
+                >
+
+                <img
+                    id="previewImagem"
+                    class="character-image"
+                >
+
+            </div>
+
+        </div>
+
+        <h2>Status</h2>
+
+        <div class="status-grid">
+
+            <div>
+                <label>PV Atual</label>
+                <input id="pvAtual">
+            </div>
+
+            <div>
+                <label>PV Máximo</label>
+                <input
+                    id="pvMax"
+                    readonly
+                >
+            </div>
+
+            <div>
+                <label>PM Atual</label>
+                <input id="pmAtual">
+            </div>
+
+            <div>
+                <label>PM Máximo</label>
+                <input
+                    id="pmMax"
+                    readonly
+                >
+            </div>
+
+            <div>
+                <label>SAN Atual</label>
+                <input id="sanAtual">
+            </div>
+
+            <div>
+                <label>SAN Máxima</label>
+                <input id="sanMax">
+            </div>
+
+            <div>
+                <label>MOV</label>
+                <input
+                    id="mov"
+                    readonly
+                >
+            </div>
+
+            <div>
+                <label>Dano Extra</label>
+                <input
+                    id="danoExtra"
+                    readonly
+                >
+            </div>
+
+            <div>
+                <label>Corpo</label>
+                <input
+                    id="corpo"
+                    readonly
+                >
+            </div>
+
+        </div>
+
+        <h2>Atributos</h2>
+
+        <div id="atributosContainer">
+
+        </div>
+
+    </section>
+
+    <!-- PERÍCIAS -->
+
+    <section
+        id="pericias"
+        class="tab-content"
+    >
+
+        <h2>Perícias</h2>
+
+        <div id="periciasContainer">
+
+        </div>
+
+    </section>
+
+    <!-- INVENTÁRIO -->
+
+    <section
+        id="inventario"
+        class="tab-content"
+    >
+
+        <h2>Inventário</h2>
+
+        <button id="addItemButton">
+            + Adicionar Item
+        </button>
+
+        <div id="inventarioContainer">
+
+        </div>
+
+    </section>
+
+    <!-- ARMAS -->
+
+    <section
+        id="armas"
+        class="tab-content"
+    >
+
+        <h2>Armas</h2>
+
+        <button id="addWeaponButton">
+            + Adicionar Arma
+        </button>
+
+        <div id="armasContainer">
+
+        </div>
+
+    </section>
+
+    <!-- MAGIAS -->
+
+    <section
+        id="magias"
+        class="tab-content"
+    >
+
+        <h2>Magias</h2>
+
+        <button id="addSpellButton">
+            + Adicionar Magia
+        </button>
+
+        <div id="magiasContainer">
+
+        </div>
+
+    </section>
+
+    <!-- RELAÇÕES -->
+
+    <section
+        id="relacoes"
+        class="tab-content"
+    >
+
+        <h2>Relações</h2>
+
+        <button id="addRelationButton">
+            + Adicionar Relação
+        </button>
+
+        <div id="relacoesContainer">
+
+        </div>
+
+        <h2>Informações Pessoais</h2>
+
+        <textarea
+            id="informacoesPessoais"
+            rows="15"
+        ></textarea>
+
+    </section>
+
+</main>
+
+<script src="js/calculos.js"></script>
+
+<script src="js/ficha.js"></script>
+```
+
+</body>
+</html>
