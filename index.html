@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arkham Sheets</title>
+
+```
+<link rel="stylesheet" href="css/style.css">
+```
+
+</head>
+<body>
+
+```
+<div class="background-overlay"></div>
+
+<main class="login-container">
+
+    <div class="logo-area">
+        <h1>ARKHAM SHEETS</h1>
+        <p>Chamado de Cthulhu 7ª Edição</p>
+    </div>
+
+    <section class="login-card">
+
+        <div id="loginForm">
+
+            <h2>Entrar</h2>
+
+            <label for="loginUser">Usuário</label>
+            <input
+                type="text"
+                id="loginUser"
+                placeholder="Digite seu usuário"
+            >
+
+            <label for="loginPassword">Senha</label>
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Digite sua senha"
+            >
+
+            <button id="loginButton">
+                Entrar
+            </button>
+
+            <p class="switch-form">
+                Não possui conta?
+                <a href="#" id="showRegister">
+                    Criar Conta
+                </a>
+            </p>
+
+        </div>
+
+        <div id="registerForm" style="display:none;">
+
+            <h2>Criar Conta</h2>
+
+            <label for="registerUser">Usuário</label>
+            <input
+                type="text"
+                id="registerUser"
+                placeholder="Novo usuário"
+            >
+
+            <label for="registerPassword">Senha</label>
+            <input
+                type="password"
+                id="registerPassword"
+                placeholder="Nova senha"
+            >
+
+            <button id="registerButton">
+                Criar Conta
+            </button>
+
+            <p class="switch-form">
+                Já possui conta?
+                <a href="#" id="showLogin">
+                    Entrar
+                </a>
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="js/auth.js"></script>
+```
+
+</body>
+</html>
