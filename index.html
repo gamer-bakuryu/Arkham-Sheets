@@ -1,98 +1,198 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arkham Sheets</title>
+    <title>Gerador de Fichas CoC 7ed</title>
+    <style>
+        :root {
+            --bg-color: #1a2621;
+            --panel-color: #253329;
+            --text-color: #dcdcdc;
+            --accent-color: #5c7a65;
+            --green-book: #4a5d4e;
+            --red-accent: #8b3a3a;
+        }
 
-```
-<link rel="stylesheet" href="css/style.css">
-```
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
 
+        h1, h2, h3 { text-transform: uppercase; letter-spacing: 1px; color: #aebcag; }
+
+        /* Layout */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .row { display: flex; gap: 20px; flex-wrap: wrap; }
+        .col { flex: 1; min-width: 300px; }
+        
+        /* Boxes */
+        .box {
+            background: var(--panel-color);
+            border: 2px solid var(--green-book);
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        /* Forms & Inputs */
+        label { display: block; font-size: 0.8em; margin-bottom: 2px; }
+        input, select, textarea {
+            background: #1e2b22;
+            border: 1px solid var(--green-book);
+            color: var(--text-color);
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 5px;
+            font-family: inherit;
+        }
+        input[type="number"] { width: 60px; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--green-book); }
+        .tab-btn {
+            background: #1e2b22;
+            color: #888;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab-btn.active { background: var(--green-book); color: #fff; border-top: 2px solid #fff; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Grid de Status e Atributos */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .attr-group { border: 1px solid #333; padding: 10px; text-align: center; }
+        
+        /* Buttons */
+        button.action-btn {
+            background: var(--green-book);
+            color: #fff;
+            border: 1px solid #666;
+            padding: 8px 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        button.action-btn:hover { background: #6b826a; }
+        
+        /* Image */
+        .char-img-preview { width: 100%; max-width: 200px; height: 200px; background: #000; object-fit: cover; display: block; margin: 0 auto; border: 2px solid #333; }
+
+        /* Login Screen */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 36, 27, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+
+        /* Skills Table */
+        .skill-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .skill-name { width: 200px; font-weight: bold; }
+        .skill-val { width: 60px; text-align: center; }
+        .skill-half, .skill-fifth { font-size: 0.8em; color: #888; width: 40px; text-align: center; }
+
+        .list-item { background: #2a3b30; padding: 10px; margin-bottom: 5px; border-left: 3px solid var(--green-book); }
+
+    </style>
 </head>
 <body>
 
-```
-<div class="background-overlay"></div>
+<!-- TELA DE LOGIN (SIMULADA) -->
+<div id="login-screen">
+    <div class="box" style="width: 300px; text-align: center;">
+        <h2>Login Investigador</h2>
+        <input type="text" id="username-display" placeholder="Seu Nome">
+        <p style="font-size: 0.8em; color: #aaa;">Nota: Os dados são salvos no navegador.</p>
+        <button class="action-btn" style="width:100%" onclick="app.login()">Entrar</button>
+    </div>
+</div>
 
-<main class="login-container">
-
-    <div class="logo-area">
-        <h1>ARKHAM SHEETS</h1>
-        <p>Chamado de Cthulhu 7ª Edição</p>
+<div class="container" id="app-interface" style="display:none;">
+    
+    <!-- Header -->
+    <div class="row" style="align-items: center; border-bottom: 2px solid var(--green-book); padding-bottom: 10px; margin-bottom: 20px;">
+        <div class="col">
+            <h1 id="header-title">Fichas de RPG</h1>
+        </div>
+        <div class="col" style="text-align: right;">
+            <button class="action-btn" onclick="app.logout()">Sair</button>
+        </div>
     </div>
 
-    <section class="login-card">
+    <!-- Menu de Fichas -->
+    <div class="box">
+        <h3>Minhas Fichas</h3>
+        <div class="row">
+            <select id="char-select" style="width: auto; flex-grow: 1;" onchange="app.loadChar()">
+                <option value="">-- Selecionar Ficha --</option>
+            </select>
+            <button class="action-btn" onclick="app.createNewChar()">+ Nova Ficha</button>
+            <button class="action-btn" onclick="app.saveChar()" style="background-color: #3a5e3a;">Salvar Ficha</button>
+            <button class="action-btn" onclick="app.deleteChar()" style="background-color: #5e3a3a;">Excluir</button>
+        </div>
+    </div>
 
-        <div id="loginForm">
-
-            <h2>Entrar</h2>
-
-            <label for="loginUser">Usuário</label>
-            <input
-                type="text"
-                id="loginUser"
-                placeholder="Digite seu usuário"
-            >
-
-            <label for="loginPassword">Senha</label>
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Digite sua senha"
-            >
-
-            <button id="loginButton">
-                Entrar
-            </button>
-
-            <p class="switch-form">
-                Não possui conta?
-                <a href="#" id="showRegister">
-                    Criar Conta
-                </a>
-            </p>
-
+    <!-- Editor de Ficha -->
+    <div id="sheet-editor">
+        
+        <!-- Abas -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="app.openTab(event, 'tab-main')">Principal</button>
+            <button class="tab-btn" onclick="app.openTab(event, 'tab-skills')">Perícias</button>
+            <button class="tab-btn" onclick="app.openTab(event, 'tab-inv')">Inventário</button>
+            <button class="tab-btn" onclick="app.openTab(event, 'tab-weapon')">Armas</button>
+            <button class="tab-btn" onclick="app.openTab(event, 'tab-magic')">Magia</button>
+            <button class="tab-btn" onclick="app.openTab(event, 'tab-bg')">Background</button>
         </div>
 
-        <div id="registerForm" style="display:none;">
+        <!-- ABA PRINCIPAL -->
+        <div id="tab-main" class="tab-content active">
+            <div class="row">
+                <!-- Dados Pessoais -->
+                <div class="col box">
+                    <h3>Dados do Investigador</h3>
+                    <label>Imagem (512x512)</label>
+                    <input type="file" id="img-upload" accept="image/*" onchange="app.handleImage(this)">
+                    <img id="img-preview" class="char-img-preview" src="">
+                    <br><br>
+                    <label>Nome do Jogador</label>
+                    <input type="text" id="inp-player">
+                    <label>Nome do Personagem</label>
+                    <input type="text" id="inp-char-name">
+                    <label>Profissão</label>
+                    <input type="text" id="inp-prof">
+                    <label>Idade</label>
+                    <input type="number" id="inp-age">
+                </div>
 
-            <h2>Criar Conta</h2>
-
-            <label for="registerUser">Usuário</label>
-            <input
-                type="text"
-                id="registerUser"
-                placeholder="Novo usuário"
-            >
-
-            <label for="registerPassword">Senha</label>
-            <input
-                type="password"
-                id="registerPassword"
-                placeholder="Nova senha"
-            >
-
-            <button id="registerButton">
-                Criar Conta
-            </button>
-
-            <p class="switch-form">
-                Já possui conta?
-                <a href="#" id="showLogin">
-                    Entrar
-                </a>
-            </p>
-
-        </div>
-
-    </section>
-
-</main>
-
-<script src="js/auth.js"></script>
-```
-
-</body>
-</html>
+                <!-- Atributos e Status -->
+                <div class="col box">
+                    <h3>Atributos</h3>
+                    <div class="stats-grid">
+                        <div class="attr-group">
+                            <label>FORÇA (FOR)</label>
+                            <input type="number" class="attr-calc" id="attr-str" value="50" onchange="app.calcAll()">
+                        </div>
+                        <div class="attr-group">
+                            <label>CONSTITUIÇÃO (CON)</label>
+                            <input type="number" class="attr-calc" id="attr-con" value="50" onchange="app.calcAll()">
+                        </div>
+                        <div class="attr-group">
+                            <label>TAMANHO (TAM)</label>
+                            <input type="number" class="attr-calc" id="attr-siz" value="50" onchange="app.calcAll()">
+                        </div>
+                        <div class="attr-group">
+                            <label> Destreza (DES)</label>
+                            <input type="number" class="attr-calc" id="attr-dex
