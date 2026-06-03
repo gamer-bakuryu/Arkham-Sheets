@@ -54,6 +54,13 @@ const SheetEditor = (() => {
                 alert('Ficha não encontrada.');
                 return;
             }
+            // Garantir que attributes existe (fichas antigas)
+            if (!currentSheet.attributes) {
+                currentSheet.attributes = {
+                    for: 0, con: 0, tam: 0, des: 0,
+                    apa: 0, edu: 0, int: 0, pod: 0, sor: 0
+                };
+            }
         } else {
             currentSheet = createNewSheet();
             Storage.saveSheet(currentSheet);
@@ -79,18 +86,19 @@ const SheetEditor = (() => {
         const preview = document.getElementById('portrait-preview');
         const removeBtn = document.getElementById('btn-remove-portrait');
         if (currentSheet.portrait) {
-            preview.innerHTML = `<img src="${currentSheet.portrait}" alt="Retrato">`;
+            preview.innerHTML = '<img src="' + currentSheet.portrait + '" alt="Retrato">';
             removeBtn.style.display = 'block';
         } else {
             preview.innerHTML = '<span class="portrait-placeholder">512×512</span>';
             removeBtn.style.display = 'none';
         }
 
-        // Atributos
+        // Atributos — setar valores nos inputs
         const attrs = currentSheet.attributes || {};
-        document.querySelectorAll('.attr-value').forEach(input => {
-            const attrKey = input.dataset.attrField;
-            input.value = attrs[attrKey] || 0;
+        document.querySelectorAll('.attr-value').forEach(function(input) {
+            var attrKey = input.dataset.attrField;
+            var val = (attrs[attrKey] !== undefined && attrs[attrKey] !== null) ? attrs[attrKey] : 0;
+            input.value = val;
         });
 
         // Status editáveis
@@ -102,32 +110,32 @@ const SheetEditor = (() => {
         updateAllCalculations();
 
         // Perícias
-        const skillsContainer = document.getElementById('skills-list');
-        Skills.render(skillsContainer, currentSheet, attrs);
+        var skillsContainer = document.getElementById('skills-list');
+        Skills.render(skillsContainer, currentSheet, getCurrentAttributes());
 
         // Inventário
-        const invContainer = document.getElementById('inventory-list');
+        var invContainer = document.getElementById('inventory-list');
         Inventory.render(invContainer, currentSheet.inventory || [], scheduleAutoSave);
 
         // Armas
-        const weaponsContainer = document.getElementById('weapons-list');
+        var weaponsContainer = document.getElementById('weapons-list');
         Weapons.render(weaponsContainer, currentSheet.weapons || [], scheduleAutoSave);
 
         // Magias
-        const magicContainer = document.getElementById('magic-list');
+        var magicContainer = document.getElementById('magic-list');
         Magic.render(magicContainer, currentSheet.spells || [], scheduleAutoSave);
 
         // Relações
-        const relContainer = document.getElementById('relations-list');
+        var relContainer = document.getElementById('relations-list');
         Relations.render(relContainer, currentSheet.relations || [], scheduleAutoSave);
 
         // Informações pessoais
-        const personalFields = [
+        var personalFields = [
             'personalDescription', 'ideology', 'traits', 'injuries',
             'phobias', 'treasures', 'encounters', 'backstory', 'notes'
         ];
-        personalFields.forEach(field => {
-            const el = document.querySelector(`[data-field="${field}"]`);
+        personalFields.forEach(function(field) {
+            var el = document.querySelector('[data-field="' + field + '"]');
             if (el) el.value = currentSheet[field] || '';
         });
     }
@@ -145,8 +153,11 @@ const SheetEditor = (() => {
         currentSheet.occupation = getVal('char-occupation');
 
         // Atributos
-        document.querySelectorAll('.attr-value').forEach(input => {
-            const attrKey = input.dataset.attrField;
+        if (!currentSheet.attributes) {
+            currentSheet.attributes = {};
+        }
+        document.querySelectorAll('.attr-value').forEach(function(input) {
+            var attrKey = input.dataset.attrField;
             currentSheet.attributes[attrKey] = parseInt(input.value) || 0;
         });
 
@@ -156,32 +167,32 @@ const SheetEditor = (() => {
         currentSheet.sanCurrent = parseInt(getVal('san-current')) || 0;
 
         // Perícias
-        const skillsContainer = document.getElementById('skills-list');
+        var skillsContainer = document.getElementById('skills-list');
         currentSheet.skills = Skills.collectValues(skillsContainer);
 
         // Inventário
-        const invContainer = document.getElementById('inventory-list');
+        var invContainer = document.getElementById('inventory-list');
         currentSheet.inventory = Inventory.collectData(invContainer);
 
         // Armas
-        const weaponsContainer = document.getElementById('weapons-list');
+        var weaponsContainer = document.getElementById('weapons-list');
         currentSheet.weapons = Weapons.collectData(weaponsContainer);
 
         // Magias
-        const magicContainer = document.getElementById('magic-list');
+        var magicContainer = document.getElementById('magic-list');
         currentSheet.spells = Magic.collectData(magicContainer);
 
         // Relações
-        const relContainer = document.getElementById('relations-list');
+        var relContainer = document.getElementById('relations-list');
         currentSheet.relations = Relations.collectData(relContainer);
 
         // Informações pessoais
-        const personalFields = [
+        var personalFields = [
             'personalDescription', 'ideology', 'traits', 'injuries',
             'phobias', 'treasures', 'encounters', 'backstory', 'notes'
         ];
-        personalFields.forEach(field => {
-            const el = document.querySelector(`[data-field="${field}"]`);
+        personalFields.forEach(function(field) {
+            var el = document.querySelector('[data-field="' + field + '"]');
             if (el) currentSheet[field] = el.value;
         });
 
@@ -193,46 +204,60 @@ const SheetEditor = (() => {
      * Atualiza todos os campos calculados automaticamente.
      */
     function updateAllCalculations() {
-        const attrs = getCurrentAttributes();
+        // Ler atributos diretamente dos inputs do DOM
+        var forVal = parseInt(document.querySelector('[data-attr-field="for"]').value) || 0;
+        var conVal = parseInt(document.querySelector('[data-attr-field="con"]').value) || 0;
+        var tamVal = parseInt(document.querySelector('[data-attr-field="tam"]').value) || 0;
+        var desVal = parseInt(document.querySelector('[data-attr-field="des"]').value) || 0;
+        var apaVal = parseInt(document.querySelector('[data-attr-field="apa"]').value) || 0;
+        var eduVal = parseInt(document.querySelector('[data-attr-field="edu"]').value) || 0;
+        var intVal = parseInt(document.querySelector('[data-attr-field="int"]').value) || 0;
+        var podVal = parseInt(document.querySelector('[data-attr-field="pod"]').value) || 0;
+        var sorVal = parseInt(document.querySelector('[data-attr-field="sor"]').value) || 0;
 
         // Metade e quinto dos atributos
-        document.querySelectorAll('.attr-row').forEach(row => {
-            const input = row.querySelector('.attr-value');
-            const val = parseInt(input.value) || 0;
-            const halfEl = row.querySelector('.attr-half');
-            const fifthEl = row.querySelector('.attr-fifth');
+        document.querySelectorAll('.attr-row').forEach(function(row) {
+            var input = row.querySelector('.attr-value');
+            var val = parseInt(input.value) || 0;
+            var halfEl = row.querySelector('.attr-half');
+            var fifthEl = row.querySelector('.attr-fifth');
             if (halfEl) halfEl.textContent = Calculations.half(val);
             if (fifthEl) fifthEl.textContent = Calculations.fifth(val);
         });
 
-        // PV Máximo
-        const maxHP = Calculations.calcMaxHP(attrs.con, attrs.tam);
-        document.getElementById('hp-max').textContent = maxHP;
+        // PV Máximo = (CON + TAM) / 5 arredondado para baixo
+        var maxHP = Calculations.calcMaxHP(conVal, tamVal);
+        var hpMaxEl = document.getElementById('hp-max');
+        if (hpMaxEl) hpMaxEl.textContent = maxHP;
 
-        // PM Máximo
-        const maxMP = Calculations.calcMaxMP(attrs.pod);
-        document.getElementById('mp-max').textContent = maxMP;
+        // PM Máximo = POD / 5 arredondado para baixo
+        var maxMP = Calculations.calcMaxMP(podVal);
+        var mpMaxEl = document.getElementById('mp-max');
+        if (mpMaxEl) mpMaxEl.textContent = maxMP;
 
         // Sanidade Máxima = POD
-        const maxSan = attrs.pod || 0;
-        document.getElementById('san-max').textContent = maxSan;
+        var sanMaxEl = document.getElementById('san-max');
+        if (sanMaxEl) sanMaxEl.textContent = podVal;
 
         // Movimento
-        const mov = Calculations.calcMOV(attrs.for, attrs.des, attrs.tam);
-        document.getElementById('mov-value').textContent = mov;
+        var mov = Calculations.calcMOV(forVal, desVal, tamVal);
+        var movEl = document.getElementById('mov-value');
+        if (movEl) movEl.textContent = mov;
 
         // Dano Extra e Corpo
-        const { damageBonus, build } = Calculations.calcDamageBonusAndBuild(attrs.for, attrs.tam);
-        document.getElementById('dmg-bonus').textContent = damageBonus;
-        document.getElementById('build-value').textContent = build;
+        var result = Calculations.calcDamageBonusAndBuild(forVal, tamVal);
+        var dmgEl = document.getElementById('dmg-bonus');
+        if (dmgEl) dmgEl.textContent = result.damageBonus;
+        var buildEl = document.getElementById('build-value');
+        if (buildEl) buildEl.textContent = result.build;
     }
 
     /**
      * Obtém os atributos atuais do DOM.
      */
     function getCurrentAttributes() {
-        const attrs = {};
-        document.querySelectorAll('.attr-value').forEach(input => {
+        var attrs = {};
+        document.querySelectorAll('.attr-value').forEach(function(input) {
             attrs[input.dataset.attrField] = parseInt(input.value) || 0;
         });
         return attrs;
@@ -243,7 +268,7 @@ const SheetEditor = (() => {
      */
     function scheduleAutoSave() {
         if (autoSaveTimer) clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(() => {
+        autoSaveTimer = setTimeout(function() {
             collectAndSave();
         }, 500);
     }
@@ -253,29 +278,25 @@ const SheetEditor = (() => {
      */
     function initEditorEvents() {
         // Informações básicas - auto save
-        document.querySelectorAll('#tab-main .info-section input').forEach(input => {
+        document.querySelectorAll('#tab-main .info-section input').forEach(function(input) {
             input.addEventListener('input', scheduleAutoSave);
         });
 
         // Atributos - auto save + recalcular
-        document.querySelectorAll('.attr-value').forEach(input => {
-            input.addEventListener('input', () => {
+        document.querySelectorAll('.attr-value').forEach(function(input) {
+            input.addEventListener('input', function() {
                 updateAllCalculations();
 
                 // Atualizar Esquivar e Língua Nativa nas perícias se a aba estiver carregada
-                const attrs = getCurrentAttributes();
-                const skillsContainer = document.getElementById('skills-list');
+                var attrs = getCurrentAttributes();
+                var skillsContainer = document.getElementById('skills-list');
                 if (skillsContainer.children.length > 0) {
+                    // Salvar valores atuais das perícias antes de re-renderizar
+                    var currentSkillValues = Skills.collectValues(skillsContainer);
+                    if (currentSheet) {
+                        currentSheet.skills = currentSkillValues;
+                    }
                     Skills.render(skillsContainer, currentSheet || {}, attrs);
-                    // Re-adicionar listeners de perícias
-                    skillsContainer.querySelectorAll('.skill-value').forEach(skillInput => {
-                        skillInput.addEventListener('input', (e) => {
-                            const row = e.target.closest('.skill-row');
-                            const val = parseInt(e.target.value) || 0;
-                            Skills.updateCalculations(row, val);
-                            scheduleAutoSave();
-                        });
-                    });
                 }
 
                 scheduleAutoSave();
@@ -283,8 +304,9 @@ const SheetEditor = (() => {
         });
 
         // Status editáveis - auto save
-        ['hp-current', 'mp-current', 'san-current'].forEach(id => {
-            document.getElementById(id).addEventListener('input', scheduleAutoSave);
+        ['hp-current', 'mp-current', 'san-current'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.addEventListener('input', scheduleAutoSave);
         });
 
         // Upload de retrato
@@ -292,17 +314,17 @@ const SheetEditor = (() => {
         document.getElementById('btn-remove-portrait').addEventListener('click', removePortrait);
 
         // Perícias - delegação de eventos
-        document.getElementById('skills-list').addEventListener('input', (e) => {
+        document.getElementById('skills-list').addEventListener('input', function(e) {
             if (e.target.classList.contains('skill-value')) {
-                const row = e.target.closest('.skill-row');
-                const val = parseInt(e.target.value) || 0;
+                var row = e.target.closest('.skill-row');
+                var val = parseInt(e.target.value) || 0;
                 Skills.updateCalculations(row, val);
                 scheduleAutoSave();
             }
         });
 
         // Botões de adicionar
-        document.getElementById('btn-add-item').addEventListener('click', () => {
+        document.getElementById('btn-add-item').addEventListener('click', function() {
             if (!currentSheet.inventory) currentSheet.inventory = [];
             currentSheet.inventory.push(Inventory.createEmptyItem());
             Inventory.render(
@@ -313,7 +335,7 @@ const SheetEditor = (() => {
             scheduleAutoSave();
         });
 
-        document.getElementById('btn-add-weapon').addEventListener('click', () => {
+        document.getElementById('btn-add-weapon').addEventListener('click', function() {
             if (!currentSheet.weapons) currentSheet.weapons = [];
             currentSheet.weapons.push(Weapons.createEmptyWeapon());
             Weapons.render(
@@ -324,7 +346,7 @@ const SheetEditor = (() => {
             scheduleAutoSave();
         });
 
-        document.getElementById('btn-add-spell').addEventListener('click', () => {
+        document.getElementById('btn-add-spell').addEventListener('click', function() {
             if (!currentSheet.spells) currentSheet.spells = [];
             currentSheet.spells.push(Magic.createEmptySpell());
             Magic.render(
@@ -335,7 +357,7 @@ const SheetEditor = (() => {
             scheduleAutoSave();
         });
 
-        document.getElementById('btn-add-relation').addEventListener('click', () => {
+        document.getElementById('btn-add-relation').addEventListener('click', function() {
             if (!currentSheet.relations) currentSheet.relations = [];
             currentSheet.relations.push(Relations.createEmptyRelation());
             Relations.render(
@@ -347,22 +369,22 @@ const SheetEditor = (() => {
         });
 
         // Informações pessoais - auto save
-        document.querySelectorAll('#tab-relations textarea').forEach(ta => {
+        document.querySelectorAll('#tab-relations textarea').forEach(function(ta) {
             ta.addEventListener('input', scheduleAutoSave);
         });
 
         // Exportar ficha individual
-        document.getElementById('btn-export-sheet').addEventListener('click', () => {
+        document.getElementById('btn-export-sheet').addEventListener('click', function() {
             collectAndSave();
-            const json = Storage.exportSingleSheet(currentSheet.id);
+            var json = Storage.exportSingleSheet(currentSheet.id);
             if (json) {
-                downloadJSON(json, `callkeeper_${(currentSheet.characterName || 'ficha').replace(/\s+/g, '_')}.json`);
+                downloadJSON(json, 'callkeeper_' + (currentSheet.characterName || 'ficha').replace(/\s+/g, '_') + '.json');
             }
         });
 
         // Excluir ficha
-        document.getElementById('btn-delete-sheet').addEventListener('click', () => {
-            if (confirm(`Tem certeza que deseja excluir a ficha "${currentSheet.characterName}"?`)) {
+        document.getElementById('btn-delete-sheet').addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja excluir a ficha "' + currentSheet.characterName + '"?')) {
                 Storage.deleteSheet(currentSheet.id);
                 currentSheet = null;
                 App.showScreen('sheets');
@@ -370,7 +392,7 @@ const SheetEditor = (() => {
         });
 
         // Voltar para lista
-        document.getElementById('btn-back-to-list').addEventListener('click', () => {
+        document.getElementById('btn-back-to-list').addEventListener('click', function() {
             collectAndSave();
             currentSheet = null;
             App.showScreen('sheets');
@@ -381,7 +403,7 @@ const SheetEditor = (() => {
      * Gerencia upload de retrato.
      */
     function handlePortraitUpload(e) {
-        const file = e.target.files[0];
+        var file = e.target.files[0];
         if (!file) return;
 
         if (!file.type.startsWith('image/')) {
@@ -389,26 +411,26 @@ const SheetEditor = (() => {
             return;
         }
 
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
                 canvas.width = 512;
                 canvas.height = 512;
-                const ctx = canvas.getContext('2d');
+                var ctx = canvas.getContext('2d');
 
                 // Crop centralizado
-                const size = Math.min(img.width, img.height);
-                const sx = (img.width - size) / 2;
-                const sy = (img.height - size) / 2;
+                var size = Math.min(img.width, img.height);
+                var sx = (img.width - size) / 2;
+                var sy = (img.height - size) / 2;
                 ctx.drawImage(img, sx, sy, size, size, 0, 0, 512, 512);
 
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
                 currentSheet.portrait = dataUrl;
 
-                const preview = document.getElementById('portrait-preview');
-                preview.innerHTML = `<img src="${dataUrl}" alt="Retrato">`;
+                var preview = document.getElementById('portrait-preview');
+                preview.innerHTML = '<img src="' + dataUrl + '" alt="Retrato">';
                 document.getElementById('btn-remove-portrait').style.display = 'block';
 
                 scheduleAutoSave();
@@ -424,7 +446,7 @@ const SheetEditor = (() => {
      */
     function removePortrait() {
         currentSheet.portrait = null;
-        const preview = document.getElementById('portrait-preview');
+        var preview = document.getElementById('portrait-preview');
         preview.innerHTML = '<span class="portrait-placeholder">512×512</span>';
         document.getElementById('btn-remove-portrait').style.display = 'none';
         scheduleAutoSave();
@@ -432,19 +454,19 @@ const SheetEditor = (() => {
 
     // Helpers
     function setVal(id, value) {
-        const el = document.getElementById(id);
-        if (el) el.value = value || '';
+        var el = document.getElementById(id);
+        if (el) el.value = (value !== undefined && value !== null) ? value : '';
     }
 
     function getVal(id) {
-        const el = document.getElementById(id);
+        var el = document.getElementById(id);
         return el ? el.value : '';
     }
 
     function downloadJSON(content, filename) {
-        const blob = new Blob([content], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        var blob = new Blob([content], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
         a.href = url;
         a.download = filename;
         document.body.appendChild(a);
@@ -454,10 +476,10 @@ const SheetEditor = (() => {
     }
 
     return {
-        createNewSheet,
-        openSheet,
-        collectAndSave,
-        initEditorEvents,
-        getCurrentSheet: () => currentSheet
+        createNewSheet: createNewSheet,
+        openSheet: openSheet,
+        collectAndSave: collectAndSave,
+        initEditorEvents: initEditorEvents,
+        getCurrentSheet: function() { return currentSheet; }
     };
 })();
