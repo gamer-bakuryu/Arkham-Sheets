@@ -49,11 +49,15 @@ var App = (function() {
             var playerName = sheet.playerName ? 'Jogador: ' + sheet.playerName : 'Jogador não definido';
             var occupation = sheet.occupation || 'Profissão não definida';
             var age = sheet.age ? ', ' + sheet.age + ' anos' : '';
+            var type = sheet.sheetType || 'normal';
+            var typeLabel = type === 'pulp' ? 'Pulp' : 'Normal';
+            var typeClass = type === 'pulp' ? 'pulp' : 'normal';
 
             card.innerHTML =
                 '<span class="sheet-card-name">' + escapeHtml(charName) + '</span>' +
                 '<span class="sheet-card-player">' + escapeHtml(playerName) + '</span>' +
-                '<span class="sheet-card-info">' + escapeHtml(occupation) + escapeHtml(age) + '</span>';
+                '<span class="sheet-card-info">' + escapeHtml(occupation) + escapeHtml(age) + '</span>' +
+                '<span class="sheet-card-type ' + typeClass + '">' + typeLabel + '</span>';
 
             card.addEventListener('click', function() {
                 SheetEditor.openSheet(sheet.id);
@@ -75,11 +79,26 @@ var App = (function() {
 
     function activateTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            // Não ativar aba de habilidades se estiver escondida
             btn.classList.toggle('active', btn.dataset.tab === tabId);
         });
         document.querySelectorAll('.tab-content').forEach(function(content) {
             content.classList.toggle('active', content.id === tabId);
         });
+    }
+
+    /**
+     * Abre o modal de seleção de tipo de ficha.
+     */
+    function openSheetTypeModal() {
+        document.getElementById('sheet-type-overlay').classList.add('active');
+    }
+
+    /**
+     * Fecha o modal de seleção de tipo de ficha.
+     */
+    function closeSheetTypeModal() {
+        document.getElementById('sheet-type-overlay').classList.remove('active');
     }
 
     function init() {
@@ -90,9 +109,33 @@ var App = (function() {
             });
         });
 
-        // Nova ficha
+        // Nova ficha — abre modal de tipo
         document.getElementById('btn-new-sheet').addEventListener('click', function() {
-            SheetEditor.openSheet(null);
+            openSheetTypeModal();
+        });
+
+        // Seleção de tipo: Normal
+        document.getElementById('btn-create-normal').addEventListener('click', function() {
+            closeSheetTypeModal();
+            SheetEditor.openSheet(null, 'normal');
+        });
+
+        // Seleção de tipo: Pulp
+        document.getElementById('btn-create-pulp').addEventListener('click', function() {
+            closeSheetTypeModal();
+            SheetEditor.openSheet(null, 'pulp');
+        });
+
+        // Fechar modal de tipo
+        document.getElementById('sheet-type-close').addEventListener('click', function() {
+            closeSheetTypeModal();
+        });
+
+        // Fechar modal de tipo clicando fora
+        document.getElementById('sheet-type-overlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSheetTypeModal();
+            }
         });
 
         // Logout
@@ -136,6 +179,16 @@ var App = (function() {
         if (!isLoggedIn) {
             showScreen('login');
         }
+
+        // ESC fecha modal de tipo também
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                var typeOverlay = document.getElementById('sheet-type-overlay');
+                if (typeOverlay.classList.contains('active')) {
+                    closeSheetTypeModal();
+                }
+            }
+        });
     }
 
     function downloadJSON(content, filename) {
