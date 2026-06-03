@@ -31,7 +31,12 @@
 
     --danger: #8b3a3a;
     --danger-hover: #a34545;
+    --danger-bright: #c45c5c;
     --danger-bg: #2a1515;
+
+    --insanity: #7a4a9e;
+    --insanity-hover: #9a6abe;
+    --insanity-bright: #b88cd4;
 
     --header-height: 56px;
     --tab-height: 48px;
@@ -647,6 +652,101 @@ textarea {
     font-style: italic;
 }
 
+/* ===== CHECKBOXES DE STATUS ===== */
+.status-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-dark);
+}
+
+.status-check-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.status-check-label:hover .check-text {
+    opacity: 0.85;
+}
+
+.status-checkbox {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    border: 2px solid var(--border-medium);
+    background: var(--bg-dark);
+    transition: all var(--transition);
+    position: relative;
+}
+
+.status-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+}
+
+/* Checkbox de perigo (lesão/inconsciente) */
+.check-danger-cb:checked {
+    background: var(--danger-hover);
+    border-color: var(--danger-hover);
+}
+
+.check-danger-cb {
+    accent-color: var(--danger-hover);
+    border-color: rgba(139, 58, 58, 0.5);
+}
+
+/* Checkbox de insanidade */
+.check-insanity-cb:checked {
+    background: var(--insanity-hover);
+    border-color: var(--insanity-hover);
+}
+
+.check-insanity-cb {
+    accent-color: var(--insanity-hover);
+    border-color: rgba(122, 74, 158, 0.5);
+}
+
+.check-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: color var(--transition);
+}
+
+.check-danger {
+    color: rgba(196, 92, 92, 0.7);
+}
+
+.check-insanity {
+    color: rgba(184, 140, 212, 0.7);
+}
+
+/* Quando marcado — realça o texto */
+.status-checkbox:checked ~ .check-text.check-danger,
+.check-danger-cb:checked + .check-danger {
+    color: var(--danger-bright);
+}
+
+.status-checkbox:checked ~ .check-text.check-insanity,
+.check-insanity-cb:checked + .check-insanity {
+    color: var(--insanity-bright);
+}
+
 /* ===== PERÍCIAS ===== */
 .skills-header {
     display: grid;
@@ -921,7 +1021,7 @@ textarea {
     gap: 1rem;
 }
 
-/* ===== MODAL DE INSTRUÇÕES ===== */
+/* ===== MODAL ===== */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -955,7 +1055,6 @@ textarea {
 
 .modal-container.modal-small {
     max-width: 520px;
-    max-height: auto;
 }
 
 @keyframes modalFadeIn {
