@@ -194,6 +194,7 @@
                     <div class="section-card status-section">
                         <h3 class="section-title">Status</h3>
                         <div class="status-grid">
+                            <!-- PV -->
                             <div class="status-block">
                                 <label class="status-label">PV (Pontos de Vida)</label>
                                 <div class="status-values">
@@ -208,7 +209,18 @@
                                     </div>
                                 </div>
                                 <small class="calc-hint">Máx = (CON + TAM) / 5 ↓</small>
+                                <div class="status-checks">
+                                    <label class="status-check-label">
+                                        <input type="checkbox" id="check-major-wound" class="status-checkbox" data-field="majorWound">
+                                        <span class="check-text check-danger">Lesão Grave</span>
+                                    </label>
+                                    <label class="status-check-label">
+                                        <input type="checkbox" id="check-unconscious" class="status-checkbox" data-field="unconscious">
+                                        <span class="check-text check-danger">Inconsciente</span>
+                                    </label>
+                                </div>
                             </div>
+                            <!-- PM -->
                             <div class="status-block">
                                 <label class="status-label">PM (Pontos de Magia)</label>
                                 <div class="status-values">
@@ -224,6 +236,7 @@
                                 </div>
                                 <small class="calc-hint">Máx = POD / 5 ↓</small>
                             </div>
+                            <!-- Sanidade -->
                             <div class="status-block">
                                 <label class="status-label">Sanidade</label>
                                 <div class="status-values">
@@ -238,7 +251,18 @@
                                     </div>
                                 </div>
                                 <small class="calc-hint">Máx = POD</small>
+                                <div class="status-checks">
+                                    <label class="status-check-label">
+                                        <input type="checkbox" id="check-temp-insanity" class="status-checkbox" data-field="tempInsanity">
+                                        <span class="check-text check-insanity">Insanidade Temporária</span>
+                                    </label>
+                                    <label class="status-check-label">
+                                        <input type="checkbox" id="check-indef-insanity" class="status-checkbox" data-field="indefInsanity">
+                                        <span class="check-text check-insanity">Insanidade Indefinida</span>
+                                    </label>
+                                </div>
                             </div>
+                            <!-- Movimento -->
                             <div class="status-block">
                                 <label class="status-label">Movimento (MOV)</label>
                                 <div class="status-values">
@@ -249,6 +273,7 @@
                                 </div>
                                 <small class="calc-hint">Calculado por FOR, DES e TAM</small>
                             </div>
+                            <!-- Dano Extra -->
                             <div class="status-block">
                                 <label class="status-label">Dano Extra</label>
                                 <div class="status-values">
@@ -259,6 +284,7 @@
                                 </div>
                                 <small class="calc-hint">Baseado em FOR + TAM</small>
                             </div>
+                            <!-- Corpo -->
                             <div class="status-block">
                                 <label class="status-label">Corpo</label>
                                 <div class="status-values">
