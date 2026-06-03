@@ -1,6 +1,5 @@
 /* ============================================
    CallKeeper — Chamado de Cthulhu 7ed
-   Paleta de cores inspirada no livro (verdes escuros)
    ============================================ */
 
 :root {
@@ -17,6 +16,8 @@
     --accent-green-bright: #6fbf85;
     --accent-gold: #c4a96a;
     --accent-gold-dim: #9e8a55;
+    --accent-pulp: #c47a4a;
+    --accent-pulp-light: #e09060;
 
     --text-primary: #d4ddd6;
     --text-secondary: #8fa898;
@@ -286,6 +287,28 @@ textarea {
     margin-right: 0.5rem;
 }
 
+/* ===== BADGE TIPO DE FICHA ===== */
+.sheet-type-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sheet-type-badge.normal {
+    background: rgba(74, 124, 92, 0.2);
+    color: var(--accent-green-bright);
+    border: 1px solid var(--accent-green);
+}
+
+.sheet-type-badge.pulp {
+    background: rgba(196, 122, 74, 0.2);
+    color: var(--accent-pulp-light);
+    border: 1px solid var(--accent-pulp);
+}
+
 /* ===== LISTA DE FICHAS ===== */
 .sheets-main {
     padding: 2rem 1.5rem;
@@ -344,6 +367,30 @@ textarea {
 .sheet-card-info {
     font-size: 0.85rem;
     color: var(--text-secondary);
+}
+
+.sheet-card-type {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+    width: fit-content;
+}
+
+.sheet-card-type.normal {
+    background: rgba(74, 124, 92, 0.2);
+    color: var(--accent-green-bright);
+    border: 1px solid var(--accent-green);
+}
+
+.sheet-card-type.pulp {
+    background: rgba(196, 122, 74, 0.2);
+    color: var(--accent-pulp-light);
+    border: 1px solid var(--accent-pulp);
 }
 
 .empty-state {
@@ -717,7 +764,8 @@ textarea {
 .btn-remove-item,
 .btn-remove-weapon,
 .btn-remove-spell,
-.btn-remove-relation {
+.btn-remove-relation,
+.btn-remove-ability {
     background: transparent;
     border: 1px solid var(--danger);
     color: var(--danger);
@@ -732,7 +780,8 @@ textarea {
 .btn-remove-item:hover,
 .btn-remove-weapon:hover,
 .btn-remove-spell:hover,
-.btn-remove-relation:hover {
+.btn-remove-relation:hover,
+.btn-remove-ability:hover {
     background: var(--danger);
     color: #fff;
 }
@@ -816,6 +865,38 @@ textarea {
     padding: 0.55rem 0.4rem;
 }
 
+/* ===== HABILIDADES (PULP) ===== */
+.abilities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ability-entry {
+    background: var(--bg-input);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+    padding: 1rem;
+}
+
+.ability-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.ability-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.ability-header-row h4 {
+    color: var(--accent-pulp-light);
+    font-size: 0.9rem;
+}
+
 /* ===== RELAÇÕES ===== */
 .relations-list {
     display: flex;
@@ -870,6 +951,11 @@ textarea {
     flex-direction: column;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(74, 124, 92, 0.1);
     animation: modalFadeIn 0.3s ease;
+}
+
+.modal-container.modal-small {
+    max-width: 520px;
+    max-height: auto;
 }
 
 @keyframes modalFadeIn {
@@ -1012,6 +1098,64 @@ textarea {
 .modal-nav-buttons {
     display: flex;
     gap: 0.5rem;
+}
+
+/* ===== MODAL TIPO DE FICHA ===== */
+.sheet-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.sheet-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    background: var(--bg-input);
+    border: 2px solid var(--border-dark);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: left;
+    font-family: inherit;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.sheet-type-card:hover {
+    border-color: var(--accent-green);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(74, 124, 92, 0.15);
+}
+
+.sheet-type-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+}
+
+.sheet-type-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-green-bright);
+}
+
+.sheet-type-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+#btn-create-pulp:hover {
+    border-color: var(--accent-pulp);
+    box-shadow: 0 4px 15px rgba(196, 122, 74, 0.15);
+}
+
+#btn-create-pulp .sheet-type-name {
+    color: var(--accent-pulp-light);
 }
 
 /* ===== SCROLLBAR ===== */
