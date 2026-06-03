@@ -69,6 +69,7 @@
                 <h1 class="header-logo">CallKeeper</h1>
             </div>
             <div class="header-actions">
+                <span id="sheet-type-badge" class="sheet-type-badge"></span>
                 <button id="btn-export-sheet" class="btn btn-small btn-secondary">Exportar Ficha</button>
                 <button id="btn-delete-sheet" class="btn btn-small btn-danger">Excluir Ficha</button>
             </div>
@@ -80,6 +81,7 @@
             <button class="tab-btn" data-tab="tab-inventory">Inventário</button>
             <button class="tab-btn" data-tab="tab-weapons">Armas</button>
             <button class="tab-btn" data-tab="tab-magic">Magia</button>
+            <button class="tab-btn" data-tab="tab-abilities" id="tab-abilities-btn" style="display:none">Habilidades</button>
             <button class="tab-btn" data-tab="tab-relations">Relações</button>
         </nav>
 
@@ -328,6 +330,20 @@
                 </div>
             </section>
 
+            <!-- ===== ABA DE HABILIDADES (PULP) ===== -->
+            <section id="tab-abilities" class="tab-content">
+                <div class="section-card">
+                    <div class="section-header-row">
+                        <h3 class="section-title">Habilidades Pulp</h3>
+                        <button id="btn-add-ability" class="btn btn-primary btn-small">+ Adicionar Habilidade</button>
+                    </div>
+                    <div id="abilities-list" class="abilities-list"></div>
+                    <div id="no-abilities-msg" class="empty-state-small">
+                        <p>Nenhuma habilidade registrada.</p>
+                    </div>
+                </div>
+            </section>
+
             <!-- ===== ABA DE RELAÇÕES ===== -->
             <section id="tab-relations" class="tab-content">
                 <div class="main-grid">
@@ -405,6 +421,31 @@
         </div>
     </div>
 
+    <!-- ===== MODAL DE TIPO DE FICHA ===== -->
+    <div id="sheet-type-overlay" class="modal-overlay">
+        <div class="modal-container modal-small">
+            <div class="modal-header">
+                <h2 class="modal-title">Escolha o Tipo de Ficha</h2>
+                <button id="sheet-type-close" class="modal-close-btn" title="Fechar">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>Selecione o tipo de ficha que deseja criar:</p>
+                <div class="sheet-type-options">
+                    <button id="btn-create-normal" class="sheet-type-card">
+                        <span class="sheet-type-icon">📜</span>
+                        <span class="sheet-type-name">Ficha Normal</span>
+                        <span class="sheet-type-desc">Sistema Chamado de Cthulhu 7ed. padrão, sem habilidades passivas.</span>
+                    </button>
+                    <button id="btn-create-pulp" class="sheet-type-card">
+                        <span class="sheet-type-icon">💥</span>
+                        <span class="sheet-type-name">Ficha Pulp</span>
+                        <span class="sheet-type-desc">Chamado de Cthulhu Pulp, com habilidades passivas.</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/calculations.js"></script>
@@ -412,6 +453,7 @@
     <script src="js/inventory.js"></script>
     <script src="js/weapons.js"></script>
     <script src="js/magic.js"></script>
+    <script src="js/abilities.js"></script>
     <script src="js/relations.js"></script>
     <script src="js/instructions.js"></script>
     <script src="js/sheet.js"></script>
