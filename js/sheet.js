@@ -1,20 +1,20 @@
 /**
  * CallKeeper — Módulo de Ficha (Editor)
- * Gerencia a edição de uma ficha individual.
  */
 
-const SheetEditor = (() => {
-    let currentSheet = null;
-    let autoSaveTimer = null;
+var SheetEditor = (function() {
+    var currentSheet = null;
+    var autoSaveTimer = null;
 
     /**
      * Cria uma ficha nova com valores padrão.
      */
-    function createNewSheet() {
+    function createNewSheet(sheetType) {
         return {
             id: Storage.generateId(),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
+            sheetType: sheetType || 'normal',
             playerName: '',
             characterName: 'Novo Personagem',
             age: '',
@@ -31,6 +31,7 @@ const SheetEditor = (() => {
             inventory: [],
             weapons: [],
             spells: [],
+            abilities: [],
             relations: [],
             personalDescription: '',
             ideology: '',
@@ -47,27 +48,54 @@ const SheetEditor = (() => {
     /**
      * Abre uma ficha para edição.
      */
-    function openSheet(sheetId) {
+    function openSheet(sheetId, sheetType) {
         if (sheetId) {
             currentSheet = Storage.getSheetById(sheetId);
             if (!currentSheet) {
                 alert('Ficha não encontrada.');
                 return;
             }
-            // Garantir que attributes existe (fichas antigas)
             if (!currentSheet.attributes) {
                 currentSheet.attributes = {
                     for: 0, con: 0, tam: 0, des: 0,
                     apa: 0, edu: 0, int: 0, pod: 0, sor: 0
                 };
             }
+            // Garantir compatibilidade com fichas antigas
+            if (!currentSheet.sheetType) {
+                currentSheet.sheetType = 'normal';
+            }
+            if (!currentSheet.abilities) {
+                currentSheet.abilities = [];
+            }
         } else {
-            currentSheet = createNewSheet();
+            currentSheet = createNewSheet(sheetType || 'normal');
             Storage.saveSheet(currentSheet);
         }
 
+        // Configurar visibilidade da aba de habilidades
+        configurePulpTab();
+
         populateEditor();
         App.showScreen('editor');
+    }
+
+    /**
+     * Configura a aba de Habilidades com base no tipo de ficha.
+     */
+    function configurePulpTab() {
+        var abilitiesTab = document.getElementById('tab-abilities-btn');
+        var badge = document.getElementById('sheet-type-badge');
+
+        if (currentSheet.sheetType === 'pulp') {
+            abilitiesTab.style.display = 'inline-flex';
+            badge.textContent = 'PULP';
+            badge.className = 'sheet-type-badge pulp';
+        } else {
+            abilitiesTab.style.display = 'none';
+            badge.textContent = 'NORMAL';
+            badge.className = 'sheet-type-badge normal';
+        }
     }
 
     /**
@@ -83,8 +111,8 @@ const SheetEditor = (() => {
         setVal('char-occupation', currentSheet.occupation);
 
         // Retrato
-        const preview = document.getElementById('portrait-preview');
-        const removeBtn = document.getElementById('btn-remove-portrait');
+        var preview = document.getElementById('portrait-preview');
+        var removeBtn = document.getElementById('btn-remove-portrait');
         if (currentSheet.portrait) {
             preview.innerHTML = '<img src="' + currentSheet.portrait + '" alt="Retrato">';
             removeBtn.style.display = 'block';
@@ -93,8 +121,8 @@ const SheetEditor = (() => {
             removeBtn.style.display = 'none';
         }
 
-        // Atributos — setar valores nos inputs
-        const attrs = currentSheet.attributes || {};
+        // Atributos
+        var attrs = currentSheet.attributes || {};
         document.querySelectorAll('.attr-value').forEach(function(input) {
             var attrKey = input.dataset.attrField;
             var val = (attrs[attrKey] !== undefined && attrs[attrKey] !== null) ? attrs[attrKey] : 0;
@@ -106,7 +134,7 @@ const SheetEditor = (() => {
         setVal('mp-current', currentSheet.mpCurrent || 0);
         setVal('san-current', currentSheet.sanCurrent || 0);
 
-        // Calcular e atualizar todos os campos derivados
+        // Calcular campos derivados
         updateAllCalculations();
 
         // Perícias
@@ -124,6 +152,10 @@ const SheetEditor = (() => {
         // Magias
         var magicContainer = document.getElementById('magic-list');
         Magic.render(magicContainer, currentSheet.spells || [], scheduleAutoSave);
+
+        // Habilidades (Pulp)
+        var abilitiesContainer = document.getElementById('abilities-list');
+        Abilities.render(abilitiesContainer, currentSheet.abilities || [], scheduleAutoSave);
 
         // Relações
         var relContainer = document.getElementById('relations-list');
@@ -146,13 +178,11 @@ const SheetEditor = (() => {
     function collectAndSave() {
         if (!currentSheet) return;
 
-        // Informações básicas
         currentSheet.playerName = getVal('char-player');
         currentSheet.characterName = getVal('char-name') || 'Sem Nome';
         currentSheet.age = getVal('char-age');
         currentSheet.occupation = getVal('char-occupation');
 
-        // Atributos
         if (!currentSheet.attributes) {
             currentSheet.attributes = {};
         }
@@ -161,32 +191,28 @@ const SheetEditor = (() => {
             currentSheet.attributes[attrKey] = parseInt(input.value) || 0;
         });
 
-        // Status editáveis
         currentSheet.hpCurrent = parseInt(getVal('hp-current')) || 0;
         currentSheet.mpCurrent = parseInt(getVal('mp-current')) || 0;
         currentSheet.sanCurrent = parseInt(getVal('san-current')) || 0;
 
-        // Perícias
         var skillsContainer = document.getElementById('skills-list');
         currentSheet.skills = Skills.collectValues(skillsContainer);
 
-        // Inventário
         var invContainer = document.getElementById('inventory-list');
         currentSheet.inventory = Inventory.collectData(invContainer);
 
-        // Armas
         var weaponsContainer = document.getElementById('weapons-list');
         currentSheet.weapons = Weapons.collectData(weaponsContainer);
 
-        // Magias
         var magicContainer = document.getElementById('magic-list');
         currentSheet.spells = Magic.collectData(magicContainer);
 
-        // Relações
+        var abilitiesContainer = document.getElementById('abilities-list');
+        currentSheet.abilities = Abilities.collectData(abilitiesContainer);
+
         var relContainer = document.getElementById('relations-list');
         currentSheet.relations = Relations.collectData(relContainer);
 
-        // Informações pessoais
         var personalFields = [
             'personalDescription', 'ideology', 'traits', 'injuries',
             'phobias', 'treasures', 'encounters', 'backstory', 'notes'
@@ -204,18 +230,12 @@ const SheetEditor = (() => {
      * Atualiza todos os campos calculados automaticamente.
      */
     function updateAllCalculations() {
-        // Ler atributos diretamente dos inputs do DOM
         var forVal = parseInt(document.querySelector('[data-attr-field="for"]').value) || 0;
         var conVal = parseInt(document.querySelector('[data-attr-field="con"]').value) || 0;
         var tamVal = parseInt(document.querySelector('[data-attr-field="tam"]').value) || 0;
         var desVal = parseInt(document.querySelector('[data-attr-field="des"]').value) || 0;
-        var apaVal = parseInt(document.querySelector('[data-attr-field="apa"]').value) || 0;
-        var eduVal = parseInt(document.querySelector('[data-attr-field="edu"]').value) || 0;
-        var intVal = parseInt(document.querySelector('[data-attr-field="int"]').value) || 0;
         var podVal = parseInt(document.querySelector('[data-attr-field="pod"]').value) || 0;
-        var sorVal = parseInt(document.querySelector('[data-attr-field="sor"]').value) || 0;
 
-        // Metade e quinto dos atributos
         document.querySelectorAll('.attr-row').forEach(function(row) {
             var input = row.querySelector('.attr-value');
             var val = parseInt(input.value) || 0;
@@ -225,26 +245,21 @@ const SheetEditor = (() => {
             if (fifthEl) fifthEl.textContent = Calculations.fifth(val);
         });
 
-        // PV Máximo = (CON + TAM) / 5 arredondado para baixo
         var maxHP = Calculations.calcMaxHP(conVal, tamVal);
         var hpMaxEl = document.getElementById('hp-max');
         if (hpMaxEl) hpMaxEl.textContent = maxHP;
 
-        // PM Máximo = POD / 5 arredondado para baixo
         var maxMP = Calculations.calcMaxMP(podVal);
         var mpMaxEl = document.getElementById('mp-max');
         if (mpMaxEl) mpMaxEl.textContent = maxMP;
 
-        // Sanidade Máxima = POD
         var sanMaxEl = document.getElementById('san-max');
         if (sanMaxEl) sanMaxEl.textContent = podVal;
 
-        // Movimento
         var mov = Calculations.calcMOV(forVal, desVal, tamVal);
         var movEl = document.getElementById('mov-value');
         if (movEl) movEl.textContent = mov;
 
-        // Dano Extra e Corpo
         var result = Calculations.calcDamageBonusAndBuild(forVal, tamVal);
         var dmgEl = document.getElementById('dmg-bonus');
         if (dmgEl) dmgEl.textContent = result.damageBonus;
@@ -277,21 +292,17 @@ const SheetEditor = (() => {
      * Inicializa os event listeners do editor.
      */
     function initEditorEvents() {
-        // Informações básicas - auto save
         document.querySelectorAll('#tab-main .info-section input').forEach(function(input) {
             input.addEventListener('input', scheduleAutoSave);
         });
 
-        // Atributos - auto save + recalcular
         document.querySelectorAll('.attr-value').forEach(function(input) {
             input.addEventListener('input', function() {
                 updateAllCalculations();
 
-                // Atualizar Esquivar e Língua Nativa nas perícias se a aba estiver carregada
                 var attrs = getCurrentAttributes();
                 var skillsContainer = document.getElementById('skills-list');
                 if (skillsContainer.children.length > 0) {
-                    // Salvar valores atuais das perícias antes de re-renderizar
                     var currentSkillValues = Skills.collectValues(skillsContainer);
                     if (currentSheet) {
                         currentSheet.skills = currentSkillValues;
@@ -303,17 +314,14 @@ const SheetEditor = (() => {
             });
         });
 
-        // Status editáveis - auto save
         ['hp-current', 'mp-current', 'san-current'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) el.addEventListener('input', scheduleAutoSave);
         });
 
-        // Upload de retrato
         document.getElementById('portrait-upload').addEventListener('change', handlePortraitUpload);
         document.getElementById('btn-remove-portrait').addEventListener('click', removePortrait);
 
-        // Perícias - delegação de eventos
         document.getElementById('skills-list').addEventListener('input', function(e) {
             if (e.target.classList.contains('skill-value')) {
                 var row = e.target.closest('.skill-row');
@@ -323,7 +331,6 @@ const SheetEditor = (() => {
             }
         });
 
-        // Botões de adicionar
         document.getElementById('btn-add-item').addEventListener('click', function() {
             if (!currentSheet.inventory) currentSheet.inventory = [];
             currentSheet.inventory.push(Inventory.createEmptyItem());
@@ -357,6 +364,17 @@ const SheetEditor = (() => {
             scheduleAutoSave();
         });
 
+        document.getElementById('btn-add-ability').addEventListener('click', function() {
+            if (!currentSheet.abilities) currentSheet.abilities = [];
+            currentSheet.abilities.push(Abilities.createEmptyAbility());
+            Abilities.render(
+                document.getElementById('abilities-list'),
+                currentSheet.abilities,
+                scheduleAutoSave
+            );
+            scheduleAutoSave();
+        });
+
         document.getElementById('btn-add-relation').addEventListener('click', function() {
             if (!currentSheet.relations) currentSheet.relations = [];
             currentSheet.relations.push(Relations.createEmptyRelation());
@@ -368,12 +386,10 @@ const SheetEditor = (() => {
             scheduleAutoSave();
         });
 
-        // Informações pessoais - auto save
         document.querySelectorAll('#tab-relations textarea').forEach(function(ta) {
             ta.addEventListener('input', scheduleAutoSave);
         });
 
-        // Exportar ficha individual
         document.getElementById('btn-export-sheet').addEventListener('click', function() {
             collectAndSave();
             var json = Storage.exportSingleSheet(currentSheet.id);
@@ -382,7 +398,6 @@ const SheetEditor = (() => {
             }
         });
 
-        // Excluir ficha
         document.getElementById('btn-delete-sheet').addEventListener('click', function() {
             if (confirm('Tem certeza que deseja excluir a ficha "' + currentSheet.characterName + '"?')) {
                 Storage.deleteSheet(currentSheet.id);
@@ -391,7 +406,6 @@ const SheetEditor = (() => {
             }
         });
 
-        // Voltar para lista
         document.getElementById('btn-back-to-list').addEventListener('click', function() {
             collectAndSave();
             currentSheet = null;
@@ -399,9 +413,6 @@ const SheetEditor = (() => {
         });
     }
 
-    /**
-     * Gerencia upload de retrato.
-     */
     function handlePortraitUpload(e) {
         var file = e.target.files[0];
         if (!file) return;
@@ -420,7 +431,6 @@ const SheetEditor = (() => {
                 canvas.height = 512;
                 var ctx = canvas.getContext('2d');
 
-                // Crop centralizado
                 var size = Math.min(img.width, img.height);
                 var sx = (img.width - size) / 2;
                 var sy = (img.height - size) / 2;
@@ -441,9 +451,6 @@ const SheetEditor = (() => {
         e.target.value = '';
     }
 
-    /**
-     * Remove o retrato.
-     */
     function removePortrait() {
         currentSheet.portrait = null;
         var preview = document.getElementById('portrait-preview');
@@ -452,7 +459,6 @@ const SheetEditor = (() => {
         scheduleAutoSave();
     }
 
-    // Helpers
     function setVal(id, value) {
         var el = document.getElementById(id);
         if (el) el.value = (value !== undefined && value !== null) ? value : '';
