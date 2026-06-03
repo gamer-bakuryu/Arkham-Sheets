@@ -39,6 +39,7 @@
             <h1 class="header-logo">CallKeeper</h1>
             <div class="header-actions">
                 <span id="logged-user-display" class="user-display"></span>
+                <button id="btn-instructions" class="btn btn-small btn-secondary" title="Ver instruções">📖 Instruções</button>
                 <button id="btn-export-all" class="btn btn-small btn-secondary" title="Exportar todas as fichas">Exportar</button>
                 <label class="btn btn-small btn-secondary" title="Importar fichas">
                     Importar
@@ -52,9 +53,7 @@
                 <h2>Minhas Fichas</h2>
                 <button id="btn-new-sheet" class="btn btn-primary">+ Nova Ficha</button>
             </div>
-            <div id="sheets-list" class="sheets-grid">
-                <!-- Cards de fichas serão inseridos via JS -->
-            </div>
+            <div id="sheets-list" class="sheets-grid"></div>
             <div id="no-sheets-msg" class="empty-state">
                 <p>Nenhuma ficha criada ainda.</p>
                 <p>Clique em <strong>"+ Nova Ficha"</strong> para começar.</p>
@@ -75,7 +74,6 @@
             </div>
         </header>
 
-        <!-- ABAS DE NAVEGAÇÃO -->
         <nav class="tab-nav">
             <button class="tab-btn active" data-tab="tab-main">Principal</button>
             <button class="tab-btn" data-tab="tab-skills">Perícias</button>
@@ -89,7 +87,6 @@
             <!-- ===== ABA PRINCIPAL ===== -->
             <section id="tab-main" class="tab-content active">
                 <div class="main-grid">
-                    <!-- Informações Básicas -->
                     <div class="section-card info-section">
                         <h3 class="section-title">Informações do Personagem</h3>
                         <div class="info-grid">
@@ -112,7 +109,6 @@
                         </div>
                     </div>
 
-                    <!-- Imagem do Personagem -->
                     <div class="section-card portrait-section">
                         <h3 class="section-title">Retrato</h3>
                         <div class="portrait-container">
@@ -127,7 +123,6 @@
                         </div>
                     </div>
 
-                    <!-- Atributos -->
                     <div class="section-card attributes-section">
                         <h3 class="section-title">Atributos</h3>
                         <div class="attributes-grid">
@@ -137,63 +132,54 @@
                                 <span class="attr-half-header">Metade</span>
                                 <span class="attr-fifth-header">Quinto</span>
                             </div>
-                            <!-- FOR -->
                             <div class="attr-row" data-attr="for">
                                 <label class="attr-label">FOR</label>
                                 <input type="number" class="attr-value" data-attr-field="for" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- CON -->
                             <div class="attr-row" data-attr="con">
                                 <label class="attr-label">CON</label>
                                 <input type="number" class="attr-value" data-attr-field="con" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- TAM -->
                             <div class="attr-row" data-attr="tam">
                                 <label class="attr-label">TAM</label>
                                 <input type="number" class="attr-value" data-attr-field="tam" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- DES -->
                             <div class="attr-row" data-attr="des">
                                 <label class="attr-label">DES</label>
                                 <input type="number" class="attr-value" data-attr-field="des" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- APA -->
                             <div class="attr-row" data-attr="apa">
                                 <label class="attr-label">APA</label>
                                 <input type="number" class="attr-value" data-attr-field="apa" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- EDU -->
                             <div class="attr-row" data-attr="edu">
                                 <label class="attr-label">EDU</label>
                                 <input type="number" class="attr-value" data-attr-field="edu" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- INT -->
                             <div class="attr-row" data-attr="int">
                                 <label class="attr-label">INT</label>
                                 <input type="number" class="attr-value" data-attr-field="int" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- POD -->
                             <div class="attr-row" data-attr="pod">
                                 <label class="attr-label">POD</label>
                                 <input type="number" class="attr-value" data-attr-field="pod" min="0" max="999">
                                 <span class="attr-half">0</span>
                                 <span class="attr-fifth">0</span>
                             </div>
-                            <!-- SOR -->
                             <div class="attr-row" data-attr="sor">
                                 <label class="attr-label">SOR</label>
                                 <input type="number" class="attr-value" data-attr-field="sor" min="0" max="999">
@@ -203,11 +189,9 @@
                         </div>
                     </div>
 
-                    <!-- Status -->
                     <div class="section-card status-section">
                         <h3 class="section-title">Status</h3>
                         <div class="status-grid">
-                            <!-- PV -->
                             <div class="status-block">
                                 <label class="status-label">PV (Pontos de Vida)</label>
                                 <div class="status-values">
@@ -223,7 +207,6 @@
                                 </div>
                                 <small class="calc-hint">Máx = (CON + TAM) / 5 ↓</small>
                             </div>
-                            <!-- PM -->
                             <div class="status-block">
                                 <label class="status-label">PM (Pontos de Magia)</label>
                                 <div class="status-values">
@@ -239,7 +222,6 @@
                                 </div>
                                 <small class="calc-hint">Máx = POD / 5 ↓</small>
                             </div>
-                            <!-- Sanidade -->
                             <div class="status-block">
                                 <label class="status-label">Sanidade</label>
                                 <div class="status-values">
@@ -255,7 +237,6 @@
                                 </div>
                                 <small class="calc-hint">Máx = POD</small>
                             </div>
-                            <!-- Movimento -->
                             <div class="status-block">
                                 <label class="status-label">Movimento (MOV)</label>
                                 <div class="status-values">
@@ -266,7 +247,6 @@
                                 </div>
                                 <small class="calc-hint">Calculado por FOR, DES e TAM</small>
                             </div>
-                            <!-- Dano Extra -->
                             <div class="status-block">
                                 <label class="status-label">Dano Extra</label>
                                 <div class="status-values">
@@ -277,7 +257,6 @@
                                 </div>
                                 <small class="calc-hint">Baseado em FOR + TAM</small>
                             </div>
-                            <!-- Corpo -->
                             <div class="status-block">
                                 <label class="status-label">Corpo</label>
                                 <div class="status-values">
@@ -303,9 +282,7 @@
                         <span class="skill-half-header">Metade</span>
                         <span class="skill-fifth-header">Quinto</span>
                     </div>
-                    <div id="skills-list" class="skills-list">
-                        <!-- Gerado via JS -->
-                    </div>
+                    <div id="skills-list" class="skills-list"></div>
                 </div>
             </section>
 
@@ -316,9 +293,7 @@
                         <h3 class="section-title">Inventário</h3>
                         <button id="btn-add-item" class="btn btn-primary btn-small">+ Adicionar Item</button>
                     </div>
-                    <div id="inventory-list" class="inventory-list">
-                        <!-- Gerado via JS -->
-                    </div>
+                    <div id="inventory-list" class="inventory-list"></div>
                     <div id="no-items-msg" class="empty-state-small">
                         <p>Nenhum item no inventário.</p>
                     </div>
@@ -332,9 +307,7 @@
                         <h3 class="section-title">Armas</h3>
                         <button id="btn-add-weapon" class="btn btn-primary btn-small">+ Adicionar Arma</button>
                     </div>
-                    <div id="weapons-list" class="weapons-list">
-                        <!-- Gerado via JS -->
-                    </div>
+                    <div id="weapons-list" class="weapons-list"></div>
                     <div id="no-weapons-msg" class="empty-state-small">
                         <p>Nenhuma arma registrada.</p>
                     </div>
@@ -348,9 +321,7 @@
                         <h3 class="section-title">Magias</h3>
                         <button id="btn-add-spell" class="btn btn-primary btn-small">+ Adicionar Magia</button>
                     </div>
-                    <div id="magic-list" class="magic-list">
-                        <!-- Gerado via JS -->
-                    </div>
+                    <div id="magic-list" class="magic-list"></div>
                     <div id="no-spells-msg" class="empty-state-small">
                         <p>Nenhuma magia registrada.</p>
                     </div>
@@ -360,20 +331,16 @@
             <!-- ===== ABA DE RELAÇÕES ===== -->
             <section id="tab-relations" class="tab-content">
                 <div class="main-grid">
-                    <!-- Relações Interpessoais -->
                     <div class="section-card">
                         <div class="section-header-row">
                             <h3 class="section-title">Relações Interpessoais</h3>
                             <button id="btn-add-relation" class="btn btn-primary btn-small">+ Adicionar Relação</button>
                         </div>
-                        <div id="relations-list" class="relations-list">
-                            <!-- Gerado via JS -->
-                        </div>
+                        <div id="relations-list" class="relations-list"></div>
                         <div id="no-relations-msg" class="empty-state-small">
                             <p>Nenhuma relação registrada.</p>
                         </div>
                     </div>
-                    <!-- Informações Pessoais -->
                     <div class="section-card">
                         <h3 class="section-title">Informações Pessoais</h3>
                         <div class="personal-info-grid">
@@ -420,7 +387,24 @@
         </main>
     </div>
 
-    <!-- Scripts -->
+    <!-- ===== MODAL DE INSTRUÇÕES ===== -->
+    <div id="instructions-overlay" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modal-title" class="modal-title"></h2>
+                <button id="modal-close" class="modal-close-btn" title="Fechar">✕</button>
+            </div>
+            <div id="modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <div class="modal-dots" id="modal-dots"></div>
+                <div class="modal-nav-buttons">
+                    <button id="modal-prev" class="btn btn-secondary btn-small">← Anterior</button>
+                    <button id="modal-next" class="btn btn-primary btn-small">Próximo →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/calculations.js"></script>
@@ -429,6 +413,7 @@
     <script src="js/weapons.js"></script>
     <script src="js/magic.js"></script>
     <script src="js/relations.js"></script>
+    <script src="js/instructions.js"></script>
     <script src="js/sheet.js"></script>
     <script src="js/app.js"></script>
 </body>
