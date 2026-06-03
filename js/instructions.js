@@ -27,12 +27,44 @@ var Instructions = (function() {
                     '<strong>exportar</strong> e <strong>importar</strong> fichas em formato de arquivo ' +
                     'para fazer backup ou compartilhar com outros jogadores.' +
                     '</div>' +
-                    '<p>Nas próximas páginas você encontrará as instruções de como gerar os atributos ' +
-                    'e distribuir os pontos de perícia do seu personagem.</p>' +
+                    '<p>Nas próximas páginas você encontrará as instruções de como escolher o tipo de ficha, ' +
+                    'gerar os atributos e distribuir os pontos de perícia do seu personagem.</p>' +
                     '<p><em>Boa sorte, investigador. Que os Antigos tenham piedade da sua sanidade.</em></p>'
             },
 
-            // Página 2 — Atributos: Rolagem
+            // Página 2 — Tipos de Ficha
+            {
+                title: 'Escolhendo o Tipo de Ficha',
+                content:
+                    '<p>Antes de mais nada, ao criar uma nova ficha você precisa escolher entre dois tipos de jogo. ' +
+                    'Essa escolha deve ser feita <strong>antes de rolar os atributos</strong>, pois influencia ' +
+                    'diretamente na construção do seu personagem.</p>' +
+                    '<h3>📜 Ficha Normal</h3>' +
+                    '<p>O modo padrão do <strong>Chamado de Cthulhu 7ª Edição</strong>. Neste modo, os investigadores ' +
+                    'são pessoas comuns enfrentando horrores além da compreensão humana. Não há habilidades especiais ' +
+                    'ou poderes passivos — a sobrevivência depende da inteligência, cautela e, às vezes, de pura sorte.</p>' +
+                    '<div class="highlight-box">' +
+                    'Recomendado para campanhas de <strong>investigação e horror</strong>, onde a fragilidade dos ' +
+                    'personagens faz parte da experiência.' +
+                    '</div>' +
+                    '<h3>💥 Ficha Pulp</h3>' +
+                    '<p>O modo <strong>Pulp Cthulhu</strong>, inspirado nas aventuras pulp dos anos 1930. Neste modo, ' +
+                    'os personagens são mais heroicos e resistentes, e possuem acesso a <strong>habilidades passivas</strong> ' +
+                    'especiais que lhes concedem vantagens únicas durante a aventura.</p>' +
+                    '<div class="highlight-box">' +
+                    'Recomendado para campanhas com mais <strong>ação e aventura</strong>, onde os personagens são ' +
+                    'heróis maiores que a vida, enfrentando os horrores de forma mais direta.' +
+                    '</div>' +
+                    '<p>A ficha Pulp inclui uma aba extra chamada <strong>"Habilidades"</strong>, onde você pode ' +
+                    'registrar as habilidades passivas do seu personagem com nome e descrição.</p>' +
+                    '<div class="highlight-box gold">' +
+                    '<strong>Importante:</strong> Converse com o seu Guardião (mestre) para saber qual tipo de ficha ' +
+                    'usar na sua campanha. Essa escolha é feita ao clicar em <strong>"+ Nova Ficha"</strong> e ' +
+                    'não pode ser alterada depois.' +
+                    '</div>'
+            },
+
+            // Página 3 — Atributos: Rolagem
             {
                 title: 'Gerando Atributos — Métodos de Rolagem',
                 content:
@@ -54,7 +86,7 @@ var Instructions = (function() {
                     'que segue as mesmas regras de rolagem dos atributos básicos (3D6 × 5).</p>'
             },
 
-            // Página 3 — Atributos: Tiro Rápido
+            // Página 4 — Atributos: Tiro Rápido
             {
                 title: 'Gerando Atributos — Tiro Rápido',
                 content:
@@ -80,7 +112,7 @@ var Instructions = (function() {
                     '</div>'
             },
 
-            // Página 4 — Perícias
+            // Página 5 — Perícias
             {
                 title: 'Distribuindo Pontos de Perícia',
                 content:
@@ -132,7 +164,6 @@ var Instructions = (function() {
         document.getElementById('modal-title').textContent = page.title;
         document.getElementById('modal-body').innerHTML = page.content;
 
-        // Scroll para o topo do body
         var body = document.getElementById('modal-body');
         body.scrollTop = 0;
 
@@ -211,7 +242,6 @@ var Instructions = (function() {
     function showForNewUser(username) {
         if (!hasSeenInstructions(username)) {
             markAsSeen(username);
-            // Pequeno delay para a tela de fichas renderizar primeiro
             setTimeout(function() {
                 open();
             }, 400);
@@ -226,14 +256,12 @@ var Instructions = (function() {
         document.getElementById('modal-next').addEventListener('click', nextPage);
         document.getElementById('modal-prev').addEventListener('click', prevPage);
 
-        // Fechar clicando fora do modal
         document.getElementById('instructions-overlay').addEventListener('click', function(e) {
             if (e.target === this) {
                 close();
             }
         });
 
-        // Fechar com ESC
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 var overlay = document.getElementById('instructions-overlay');
@@ -243,7 +271,6 @@ var Instructions = (function() {
             }
         });
 
-        // Botão de instruções no header
         var instrBtn = document.getElementById('btn-instructions');
         if (instrBtn) {
             instrBtn.addEventListener('click', open);
