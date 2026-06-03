@@ -15,32 +15,23 @@ const SheetEditor = (() => {
             id: Storage.generateId(),
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
-            // Informações básicas
             playerName: '',
             characterName: 'Novo Personagem',
             age: '',
             occupation: '',
             portrait: null,
-            // Atributos
             attributes: {
                 for: 0, con: 0, tam: 0, des: 0,
                 apa: 0, edu: 0, int: 0, pod: 0, sor: 0
             },
-            // Status
             hpCurrent: 0,
             mpCurrent: 0,
             sanCurrent: 0,
-            // Perícias
             skills: {},
-            // Inventário
             inventory: [],
-            // Armas
             weapons: [],
-            // Magias
             spells: [],
-            // Relações
             relations: [],
-            // Informações pessoais
             personalDescription: '',
             ideology: '',
             traits: '',
@@ -222,6 +213,10 @@ const SheetEditor = (() => {
         const maxMP = Calculations.calcMaxMP(attrs.pod);
         document.getElementById('mp-max').textContent = maxMP;
 
+        // Sanidade Máxima = POD
+        const maxSan = attrs.pod || 0;
+        document.getElementById('san-max').textContent = maxSan;
+
         // Movimento
         const mov = Calculations.calcMOV(attrs.for, attrs.des, attrs.tam);
         document.getElementById('mov-value').textContent = mov;
@@ -396,7 +391,6 @@ const SheetEditor = (() => {
 
         const reader = new FileReader();
         reader.onload = (evt) => {
-            // Redimensionar para 512x512
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
