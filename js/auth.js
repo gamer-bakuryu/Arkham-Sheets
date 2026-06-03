@@ -2,8 +2,8 @@
  * CallKeeper — Módulo de Autenticação
  */
 
-const Auth = (() => {
-    let loginForm, loginUser, loginPass, loginError, btnRegister;
+var Auth = (function() {
+    var loginForm, loginUser, loginPass, loginError, btnRegister;
 
     function init() {
         loginForm = document.getElementById('login-form');
@@ -16,9 +16,9 @@ const Auth = (() => {
         btnRegister.addEventListener('click', handleRegister);
 
         // Verificar se já está logado
-        const currentUser = Storage.getCurrentUser();
+        var currentUser = Storage.getCurrentUser();
         if (currentUser) {
-            const users = JSON.parse(localStorage.getItem('callkeeper_users') || '{}');
+            var users = JSON.parse(localStorage.getItem('callkeeper_users') || '{}');
             if (users[currentUser]) {
                 App.showScreen('sheets');
                 return true;
@@ -33,15 +33,15 @@ const Auth = (() => {
         e.preventDefault();
         clearError();
 
-        const username = loginUser.value.trim();
-        const password = loginPass.value;
+        var username = loginUser.value.trim();
+        var password = loginPass.value;
 
         if (!username || !password) {
             showError('Preencha todos os campos.');
             return;
         }
 
-        const user = Storage.authenticateUser(username, password);
+        var user = Storage.authenticateUser(username, password);
         if (user) {
             Storage.setCurrentUser(username);
             loginForm.reset();
@@ -54,8 +54,8 @@ const Auth = (() => {
     function handleRegister() {
         clearError();
 
-        const username = loginUser.value.trim();
-        const password = loginPass.value;
+        var username = loginUser.value.trim();
+        var password = loginPass.value;
 
         if (!username || !password) {
             showError('Preencha todos os campos para criar conta.');
@@ -72,11 +72,13 @@ const Auth = (() => {
             return;
         }
 
-        const result = Storage.registerUser(username, password);
+        var result = Storage.registerUser(username, password);
         if (result.success) {
             Storage.setCurrentUser(username);
             loginForm.reset();
             App.showScreen('sheets');
+            // Mostrar instruções para novo usuário
+            Instructions.showForNewUser(username);
         } else {
             showError(result.message);
         }
@@ -95,5 +97,5 @@ const Auth = (() => {
         loginError.textContent = '';
     }
 
-    return { init, logout };
+    return { init: init, logout: logout };
 })();
