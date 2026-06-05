@@ -79,7 +79,6 @@ var App = (function() {
 
     function activateTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(function(btn) {
-            // Não ativar aba de habilidades se estiver escondida
             btn.classList.toggle('active', btn.dataset.tab === tabId);
         });
         document.querySelectorAll('.tab-content').forEach(function(content) {
@@ -87,18 +86,20 @@ var App = (function() {
         });
     }
 
-    /**
-     * Abre o modal de seleção de tipo de ficha.
-     */
     function openSheetTypeModal() {
         document.getElementById('sheet-type-overlay').classList.add('active');
     }
 
-    /**
-     * Fecha o modal de seleção de tipo de ficha.
-     */
     function closeSheetTypeModal() {
         document.getElementById('sheet-type-overlay').classList.remove('active');
+    }
+
+    function openSupportModal() {
+        document.getElementById('support-overlay').classList.add('active');
+    }
+
+    function closeSupportModal() {
+        document.getElementById('support-overlay').classList.remove('active');
     }
 
     function init() {
@@ -109,7 +110,7 @@ var App = (function() {
             });
         });
 
-        // Nova ficha — abre modal de tipo
+        // Nova ficha
         document.getElementById('btn-new-sheet').addEventListener('click', function() {
             openSheetTypeModal();
         });
@@ -131,11 +132,22 @@ var App = (function() {
             closeSheetTypeModal();
         });
 
-        // Fechar modal de tipo clicando fora
         document.getElementById('sheet-type-overlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSheetTypeModal();
-            }
+            if (e.target === this) closeSheetTypeModal();
+        });
+
+        // Botão de apoio
+        document.getElementById('btn-support').addEventListener('click', function() {
+            openSupportModal();
+        });
+
+        // Fechar modal de apoio
+        document.getElementById('support-close').addEventListener('click', function() {
+            closeSupportModal();
+        });
+
+        document.getElementById('support-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeSupportModal();
         });
 
         // Logout
@@ -180,12 +192,18 @@ var App = (function() {
             showScreen('login');
         }
 
-        // ESC fecha modal de tipo também
+        // ESC fecha modais
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 var typeOverlay = document.getElementById('sheet-type-overlay');
                 if (typeOverlay.classList.contains('active')) {
                     closeSheetTypeModal();
+                    return;
+                }
+                var supportOverlay = document.getElementById('support-overlay');
+                if (supportOverlay.classList.contains('active')) {
+                    closeSupportModal();
+                    return;
                 }
             }
         });
