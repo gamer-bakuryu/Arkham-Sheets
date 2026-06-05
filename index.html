@@ -40,6 +40,7 @@
             <div class="header-actions">
                 <span id="logged-user-display" class="user-display"></span>
                 <button id="btn-instructions" class="btn btn-small btn-secondary" title="Ver instruções">📖 Instruções</button>
+                <button id="btn-support" class="btn btn-small btn-support" title="Apoie o projeto">☕ Apoiar</button>
                 <button id="btn-export-all" class="btn btn-small btn-secondary" title="Exportar todas as fichas">Exportar</button>
                 <label class="btn btn-small btn-secondary" title="Importar fichas">
                     Importar
@@ -194,7 +195,6 @@
                     <div class="section-card status-section">
                         <h3 class="section-title">Status</h3>
                         <div class="status-grid">
-                            <!-- PV -->
                             <div class="status-block">
                                 <label class="status-label">PV (Pontos de Vida)</label>
                                 <div class="status-values">
@@ -220,7 +220,6 @@
                                     </label>
                                 </div>
                             </div>
-                            <!-- PM -->
                             <div class="status-block">
                                 <label class="status-label">PM (Pontos de Magia)</label>
                                 <div class="status-values">
@@ -236,7 +235,6 @@
                                 </div>
                                 <small class="calc-hint">Máx = POD / 5 ↓</small>
                             </div>
-                            <!-- Sanidade -->
                             <div class="status-block">
                                 <label class="status-label">Sanidade</label>
                                 <div class="status-values">
@@ -262,7 +260,6 @@
                                     </label>
                                 </div>
                             </div>
-                            <!-- Movimento -->
                             <div class="status-block">
                                 <label class="status-label">Movimento (MOV)</label>
                                 <div class="status-values">
@@ -273,7 +270,6 @@
                                 </div>
                                 <small class="calc-hint">Calculado por FOR, DES e TAM</small>
                             </div>
-                            <!-- Dano Extra -->
                             <div class="status-block">
                                 <label class="status-label">Dano Extra</label>
                                 <div class="status-values">
@@ -284,7 +280,6 @@
                                 </div>
                                 <small class="calc-hint">Baseado em FOR + TAM</small>
                             </div>
-                            <!-- Corpo -->
                             <div class="status-block">
                                 <label class="status-label">Corpo</label>
                                 <div class="status-values">
@@ -467,6 +462,34 @@
                         <span class="sheet-type-name">Ficha Pulp</span>
                         <span class="sheet-type-desc">Chamado de Cthulhu Pulp, com habilidades passivas.</span>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE APOIO / PIX ===== -->
+    <div id="support-overlay" class="modal-overlay">
+        <div class="modal-container modal-small">
+            <div class="modal-header">
+                <h2 class="modal-title">☕ Apoie o CallKeeper</h2>
+                <button id="support-close" class="modal-close-btn" title="Fechar">✕</button>
+            </div>
+            <div class="modal-body support-modal-body">
+                <div class="support-text">
+                    <p>Obrigado por utilizar o <strong>CallKeeper</strong>!</p>
+                    <p>Este projeto é desenvolvido com dedicação e disponibilizado de forma totalmente gratuita
+                    para que todos possam aproveitar suas sessões de RPG da melhor forma possível.</p>
+                    <p>Se o CallKeeper tem sido útil para você e seus amigos, considere fazer uma contribuição
+                    voluntária via <strong>Pix</strong>. Qualquer valor ajuda a manter o projeto ativo e
+                    em constante melhoria.</p>
+                    <p>Escaneie o QR Code abaixo com o aplicativo do seu banco:</p>
+                </div>
+                <div class="support-qr-container">
+                    <img src="images/qrcode-pix.png" alt="QR Code Pix" class="support-qr-image">
+                </div>
+                <div class="support-thanks">
+                    <p>Desde já, muito obrigado pelo apoio! 🐙</p>
+                    <p><em>Que os Antigos recompensem sua generosidade... de formas menos terríveis que o habitual.</em></p>
                 </div>
             </div>
         </div>
