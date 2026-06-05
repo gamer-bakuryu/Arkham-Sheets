@@ -253,6 +253,20 @@ textarea {
     min-height: 1.3rem;
 }
 
+/* ===== BOTÃO DE APOIO ===== */
+.btn-support {
+    background: transparent;
+    color: var(--accent-gold);
+    border-color: var(--accent-gold-dim);
+}
+
+.btn-support:hover {
+    background: rgba(196, 169, 106, 0.1);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    box-shadow: 0 0 12px rgba(196, 169, 106, 0.15);
+}
+
 /* ===== HEADER ===== */
 .app-header {
     display: flex;
@@ -700,28 +714,6 @@ textarea {
     line-height: 1;
 }
 
-/* Checkbox de perigo (lesão/inconsciente) */
-.check-danger-cb:checked {
-    background: var(--danger-hover);
-    border-color: var(--danger-hover);
-}
-
-.check-danger-cb {
-    accent-color: var(--danger-hover);
-    border-color: rgba(139, 58, 58, 0.5);
-}
-
-/* Checkbox de insanidade */
-.check-insanity-cb:checked {
-    background: var(--insanity-hover);
-    border-color: var(--insanity-hover);
-}
-
-.check-insanity-cb {
-    accent-color: var(--insanity-hover);
-    border-color: rgba(122, 74, 158, 0.5);
-}
-
 .check-text {
     font-size: 0.82rem;
     font-weight: 600;
@@ -736,14 +728,11 @@ textarea {
     color: rgba(184, 140, 212, 0.7);
 }
 
-/* Quando marcado — realça o texto */
-.status-checkbox:checked ~ .check-text.check-danger,
-.check-danger-cb:checked + .check-danger {
+.status-checkbox:checked + .check-danger {
     color: var(--danger-bright);
 }
 
-.status-checkbox:checked ~ .check-text.check-insanity,
-.check-insanity-cb:checked + .check-insanity {
+.status-checkbox:checked + .check-insanity {
     color: var(--insanity-bright);
 }
 
@@ -1257,6 +1246,58 @@ textarea {
     color: var(--accent-pulp-light);
 }
 
+/* ===== MODAL DE APOIO / PIX ===== */
+.support-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.support-text {
+    margin-bottom: 1.25rem;
+}
+
+.support-text p {
+    margin-bottom: 0.6rem;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.support-qr-container {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    margin: 0.5rem 0 1.25rem 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.support-qr-image {
+    width: 220px;
+    height: 220px;
+    display: block;
+    image-rendering: pixelated;
+}
+
+.support-thanks {
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-dark);
+    width: 100%;
+}
+
+.support-thanks p {
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.support-thanks em {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 6px;
@@ -1336,6 +1377,11 @@ textarea {
         flex-direction: column;
         gap: 0.75rem;
     }
+
+    .support-qr-image {
+        width: 180px;
+        height: 180px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1365,5 +1411,10 @@ textarea {
 
     .modal-body {
         padding: 1rem;
+    }
+
+    .support-qr-image {
+        width: 160px;
+        height: 160px;
     }
 }
