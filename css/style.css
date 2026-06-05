@@ -18,6 +18,8 @@
     --accent-gold-dim: #9e8a55;
     --accent-pulp: #c47a4a;
     --accent-pulp-light: #e09060;
+    --accent-blue: #4a6e8b;
+    --accent-blue-light: #6a9ebb;
 
     --text-primary: #d4ddd6;
     --text-secondary: #8fa898;
@@ -265,6 +267,20 @@ textarea {
     border-color: var(--accent-gold);
     color: var(--accent-gold);
     box-shadow: 0 0 12px rgba(196, 169, 106, 0.15);
+}
+
+/* ===== BOTÃO CTHULHUTRACKER ===== */
+.btn-tracker {
+    background: transparent;
+    color: var(--accent-blue-light);
+    border-color: var(--accent-blue);
+}
+
+.btn-tracker:hover {
+    background: rgba(74, 110, 139, 0.15);
+    border-color: var(--accent-blue-light);
+    color: var(--accent-blue-light);
+    box-shadow: 0 0 12px rgba(106, 158, 187, 0.2);
 }
 
 /* ===== HEADER ===== */
