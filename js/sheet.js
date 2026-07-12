@@ -28,6 +28,7 @@ var SheetEditor = (function() {
             unconscious: false,
             tempInsanity: false,
             indefInsanity: false,
+            wealth: 0,
             skills: {},
             inventory: [],
             weapons: [],
@@ -61,11 +62,11 @@ var SheetEditor = (function() {
             }
             if (!currentSheet.sheetType) currentSheet.sheetType = 'normal';
             if (!currentSheet.abilities) currentSheet.abilities = [];
-            // Compatibilidade com fichas antigas
             if (currentSheet.majorWound === undefined) currentSheet.majorWound = false;
             if (currentSheet.unconscious === undefined) currentSheet.unconscious = false;
             if (currentSheet.tempInsanity === undefined) currentSheet.tempInsanity = false;
             if (currentSheet.indefInsanity === undefined) currentSheet.indefInsanity = false;
+            if (currentSheet.wealth === undefined) currentSheet.wealth = 0;
         } else {
             currentSheet = createNewSheet(sheetType || 'normal');
             Storage.saveSheet(currentSheet);
@@ -88,6 +89,18 @@ var SheetEditor = (function() {
             abilitiesTab.style.display = 'none';
             badge.textContent = 'NORMAL';
             badge.className = 'sheet-type-badge normal';
+        }
+    }
+
+    function formatWealth(value) {
+        var num = parseFloat(value) || 0;
+        return '$ ' + num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function updateWealthDisplay() {
+        var el = document.getElementById('wealth-value');
+        if (el && currentSheet) {
+            el.textContent = formatWealth(currentSheet.wealth);
         }
     }
 
@@ -120,17 +133,18 @@ var SheetEditor = (function() {
         setVal('mp-current', currentSheet.mpCurrent || 0);
         setVal('san-current', currentSheet.sanCurrent || 0);
 
-        // Checkboxes
         setCheck('check-major-wound', currentSheet.majorWound);
         setCheck('check-unconscious', currentSheet.unconscious);
         setCheck('check-temp-insanity', currentSheet.tempInsanity);
         setCheck('check-indef-insanity', currentSheet.indefInsanity);
 
-        // Aplicar estilo inicial dos checkboxes
         updateCheckStyle('check-major-wound', currentSheet.majorWound);
         updateCheckStyle('check-unconscious', currentSheet.unconscious);
         updateCheckStyle('check-temp-insanity', currentSheet.tempInsanity);
         updateCheckStyle('check-indef-insanity', currentSheet.indefInsanity);
+
+        // Patrimônio
+        updateWealthDisplay();
 
         updateAllCalculations();
 
@@ -180,7 +194,6 @@ var SheetEditor = (function() {
         currentSheet.mpCurrent = parseInt(getVal('mp-current')) || 0;
         currentSheet.sanCurrent = parseInt(getVal('san-current')) || 0;
 
-        // Checkboxes
         currentSheet.majorWound = getCheck('check-major-wound');
         currentSheet.unconscious = getCheck('check-unconscious');
         currentSheet.tempInsanity = getCheck('check-temp-insanity');
@@ -260,9 +273,6 @@ var SheetEditor = (function() {
         return attrs;
     }
 
-    /**
-     * Atualiza o visual do texto do checkbox ao marcar/desmarcar.
-     */
     function updateCheckStyle(id, isChecked) {
         var el = document.getElementById(id);
         if (!el) return;
@@ -288,7 +298,7 @@ var SheetEditor = (function() {
     }
 
     function initEditorEvents() {
-        document.querySelectorAll('#tab-main .info-section input').forEach(function(input) {
+        document.querySelectorAll('#tab-main .identity-section input').forEach(function(input) {
             input.addEventListener('input', scheduleAutoSave);
         });
 
@@ -313,7 +323,6 @@ var SheetEditor = (function() {
             if (el) el.addEventListener('input', scheduleAutoSave);
         });
 
-        // Checkboxes de status
         ['check-major-wound', 'check-unconscious', 'check-temp-insanity', 'check-indef-insanity'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -322,6 +331,30 @@ var SheetEditor = (function() {
                     scheduleAutoSave();
                 });
             }
+        });
+
+        // ===== Patrimônio =====
+        document.getElementById('btn-wealth-add').addEventListener('click', function() {
+            if (!currentSheet) return;
+            var input = document.getElementById('wealth-input');
+            var amount = parseFloat(input.value);
+            if (isNaN(amount) || amount <= 0) return;
+            currentSheet.wealth = (currentSheet.wealth || 0) + amount;
+            updateWealthDisplay();
+            input.value = '';
+            scheduleAutoSave();
+        });
+
+        document.getElementById('btn-wealth-remove').addEventListener('click', function() {
+            if (!currentSheet) return;
+            var input = document.getElementById('wealth-input');
+            var amount = parseFloat(input.value);
+            if (isNaN(amount) || amount <= 0) return;
+            currentSheet.wealth = (currentSheet.wealth || 0) - amount;
+            if (currentSheet.wealth < 0) currentSheet.wealth = 0;
+            updateWealthDisplay();
+            input.value = '';
+            scheduleAutoSave();
         });
 
         document.getElementById('portrait-upload').addEventListener('change', handlePortraitUpload);
@@ -437,7 +470,6 @@ var SheetEditor = (function() {
         scheduleAutoSave();
     }
 
-    // Helpers
     function setVal(id, value) {
         var el = document.getElementById(id);
         if (el) el.value = (value !== undefined && value !== null) ? value : '';
