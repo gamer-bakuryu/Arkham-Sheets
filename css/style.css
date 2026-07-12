@@ -525,10 +525,18 @@ textarea {
     gap: 1.5rem;
 }
 
-.info-grid {
+/* ===== SEÇÃO DE IDENTIDADE (RETRATO + INFO LADO A LADO) ===== */
+.identity-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.identity-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
 }
 
 /* ===== RETRATO ===== */
@@ -1334,8 +1342,13 @@ textarea {
 
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
-    .info-grid {
+    .identity-grid {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .identity-fields {
+        width: 100%;
     }
 
     .personal-info-grid {
@@ -1430,6 +1443,11 @@ textarea {
     }
 
     .support-qr-image {
+        width: 160px;
+        height: 160px;
+    }
+
+    .portrait-preview {
         width: 160px;
         height: 160px;
     }
