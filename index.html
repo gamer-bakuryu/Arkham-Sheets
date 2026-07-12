@@ -91,11 +91,9 @@
             <!-- ===== ABA PRINCIPAL ===== -->
             <section id="tab-main" class="tab-content active">
                 <div class="main-grid">
-                    <!-- Retrato + Informações lado a lado -->
                     <div class="section-card identity-section">
                         <h3 class="section-title">Identificação do Personagem</h3>
                         <div class="identity-grid">
-                            <!-- Retrato à esquerda -->
                             <div class="portrait-container">
                                 <div id="portrait-preview" class="portrait-preview">
                                     <span class="portrait-placeholder">512×512</span>
@@ -106,7 +104,6 @@
                                 </label>
                                 <button id="btn-remove-portrait" class="btn btn-small btn-danger btn-full" style="display:none">Remover Imagem</button>
                             </div>
-                            <!-- Informações à direita -->
                             <div class="identity-fields">
                                 <div class="form-group">
                                     <label for="char-player">Nome do Jogador</label>
@@ -313,9 +310,26 @@
 
             <!-- ===== ABA DE INVENTÁRIO ===== -->
             <section id="tab-inventory" class="tab-content">
+                <!-- Patrimônio -->
+                <div class="section-card">
+                    <h3 class="section-title">Patrimônio</h3>
+                    <div class="wealth-container">
+                        <div class="wealth-display">
+                            <span class="wealth-label">Saldo Atual</span>
+                            <span id="wealth-value" class="wealth-value">$ 0,00</span>
+                        </div>
+                        <div class="wealth-controls">
+                            <input type="number" id="wealth-input" class="wealth-input" min="0" step="0.01" placeholder="Valor">
+                            <button id="btn-wealth-add" class="btn btn-small btn-wealth-add" title="Adicionar ao patrimônio">+ Adicionar</button>
+                            <button id="btn-wealth-remove" class="btn btn-small btn-wealth-remove" title="Retirar do patrimônio">− Retirar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Itens -->
                 <div class="section-card">
                     <div class="section-header-row">
-                        <h3 class="section-title">Inventário</h3>
+                        <h3 class="section-title">Itens</h3>
                         <button id="btn-add-item" class="btn btn-primary btn-small">+ Adicionar Item</button>
                     </div>
                     <div id="inventory-list" class="inventory-list"></div>
@@ -426,7 +440,7 @@
         </main>
     </div>
 
-    <!-- ===== MODAL DE INSTRUÇÕES ===== -->
+    <!-- ===== MODAIS ===== -->
     <div id="instructions-overlay" class="modal-overlay">
         <div class="modal-container">
             <div class="modal-header">
@@ -444,7 +458,6 @@
         </div>
     </div>
 
-    <!-- ===== MODAL DE TIPO DE FICHA ===== -->
     <div id="sheet-type-overlay" class="modal-overlay">
         <div class="modal-container modal-small">
             <div class="modal-header">
@@ -469,7 +482,6 @@
         </div>
     </div>
 
-    <!-- ===== MODAL DE APOIO / PIX ===== -->
     <div id="support-overlay" class="modal-overlay">
         <div class="modal-container modal-small">
             <div class="modal-header">
@@ -479,11 +491,8 @@
             <div class="modal-body support-modal-body">
                 <div class="support-text">
                     <p>Obrigado por utilizar o <strong>CallKeeper</strong>!</p>
-                    <p>Este projeto é desenvolvido com dedicação e disponibilizado de forma totalmente gratuita
-                    para que todos possam aproveitar suas sessões de RPG da melhor forma possível.</p>
-                    <p>Se o CallKeeper tem sido útil para você e seus amigos, considere fazer uma contribuição
-                    voluntária via <strong>Pix</strong>. Qualquer valor ajuda a manter o projeto ativo e
-                    em constante melhoria.</p>
+                    <p>Este projeto é desenvolvido com dedicação e disponibilizado de forma totalmente gratuita para que todos possam aproveitar suas sessões de RPG da melhor forma possível.</p>
+                    <p>Se o CallKeeper tem sido útil para você e seus amigos, considere fazer uma contribuição voluntária via <strong>Pix</strong>. Qualquer valor ajuda a manter o projeto ativo e em constante melhoria.</p>
                     <p>Escaneie o QR Code abaixo com o aplicativo do seu banco:</p>
                 </div>
                 <div class="support-qr-container">
