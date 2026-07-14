@@ -690,12 +690,29 @@ textarea {
     font-style: italic;
 }
 
-/* ===== PATRIMÔNIO ===== */
+/* ===== PATRIMÔNIO E VEÍCULO ===== */
+.assets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.asset-block {
+    background: var(--bg-input);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+    padding: 1rem;
+    height: 100%;
+}
+
 .wealth-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+    height: 100%;
+    justify-content: center;
 }
 
 .wealth-display {
@@ -761,6 +778,72 @@ textarea {
     background: var(--danger);
     color: #fff;
 }
+
+/* Veículo */
+.vehicle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.vehicle-photo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vehicle-preview {
+    width: 140px;
+    height: 90px;
+    border: 2px dashed var(--border-medium);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--bg-dark);
+}
+
+.vehicle-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vehicle-placeholder {
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
+.vehicle-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.vehicle-field-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    text-align: center;
+}
+
+#vehicle-name {
+    text-align: center;
+}
+
+#vehicle-name::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+    font-style: italic;
+}
+
+
 
 /* ===== CHECKBOXES DE STATUS ===== */
 .status-checks {
@@ -1492,7 +1575,9 @@ textarea {
         gap: 0.4rem;
     }
 }
-
+    .assets-grid {
+        grid-template-columns: 1fr;
+    }
 @media (max-width: 480px) {
     .status-grid {
         grid-template-columns: 1fr;
@@ -1541,3 +1626,16 @@ textarea {
         width: 100px !important;
     }
 }
+    .wealth-value {
+        font-size: 1.4rem;
+        min-width: 130px;
+    }
+
+    .wealth-input {
+        width: 100px !important;
+    }
+
+    .vehicle-preview {
+        width: 120px;
+        height: 75px;
+    }
