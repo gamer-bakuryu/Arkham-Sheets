@@ -23,6 +23,7 @@ var SheetEditor = (function() {
             },
             hpCurrent: 0,
             mpCurrent: 0,
+            mpBonus: 0,
             sanCurrent: 0,
             majorWound: false,
             unconscious: false,
@@ -68,6 +69,7 @@ var SheetEditor = (function() {
             if (currentSheet.wealth === undefined) currentSheet.wealth = 0;
             if (currentSheet.vehicleName === undefined) currentSheet.vehicleName = '';
             if (currentSheet.vehiclePhoto === undefined) currentSheet.vehiclePhoto = null;
+            if (currentSheet.mpBonus === undefined) currentSheet.mpBonus = 0;
         } else {
             currentSheet = createNewSheet(sheetType || 'normal');
             Storage.saveSheet(currentSheet);
@@ -130,6 +132,7 @@ var SheetEditor = (function() {
 
         setVal('hp-current', currentSheet.hpCurrent || 0);
         setVal('mp-current', currentSheet.mpCurrent || 0);
+        setVal('mp-bonus', currentSheet.mpBonus || 0);
         setVal('san-current', currentSheet.sanCurrent || 0);
 
         setCheck('check-major-wound', currentSheet.majorWound);
@@ -191,6 +194,7 @@ var SheetEditor = (function() {
 
         currentSheet.hpCurrent = parseInt(getVal('hp-current')) || 0;
         currentSheet.mpCurrent = parseInt(getVal('mp-current')) || 0;
+        currentSheet.mpBonus = parseInt(getVal('mp-bonus')) || 0;
         currentSheet.sanCurrent = parseInt(getVal('san-current')) || 0;
 
         currentSheet.majorWound = getCheck('check-major-wound');
@@ -239,12 +243,20 @@ var SheetEditor = (function() {
 
         var hpMaxEl = document.getElementById('hp-max');
         if (hpMaxEl) hpMaxEl.textContent = Calculations.calcMaxHP(conVal, tamVal);
+
+        // PM Máximo = (POD / 5) + Pontos Adicionais
+        var mpBonusVal = parseInt(document.getElementById('mp-bonus').value) || 0;
+        var baseMP = Calculations.calcMaxMP(podVal);
+        var totalMP = baseMP + mpBonusVal;
         var mpMaxEl = document.getElementById('mp-max');
-        if (mpMaxEl) mpMaxEl.textContent = Calculations.calcMaxMP(podVal);
+        if (mpMaxEl) mpMaxEl.textContent = totalMP;
+
         var sanMaxEl = document.getElementById('san-max');
         if (sanMaxEl) sanMaxEl.textContent = podVal;
+
         var movEl = document.getElementById('mov-value');
         if (movEl) movEl.textContent = Calculations.calcMOV(forVal, desVal, tamVal);
+
         var result = Calculations.calcDamageBonusAndBuild(forVal, tamVal);
         var dmgEl = document.getElementById('dmg-bonus');
         if (dmgEl) dmgEl.textContent = result.damageBonus;
@@ -300,6 +312,15 @@ var SheetEditor = (function() {
             if (el) el.addEventListener('input', scheduleAutoSave);
         });
 
+        // Pontos Adicionais de PM — recalcula máximo ao alterar
+        var mpBonusEl = document.getElementById('mp-bonus');
+        if (mpBonusEl) {
+            mpBonusEl.addEventListener('input', function() {
+                updateAllCalculations();
+                scheduleAutoSave();
+            });
+        }
+
         ['check-major-wound', 'check-unconscious', 'check-temp-insanity', 'check-indef-insanity'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) {
@@ -334,10 +355,8 @@ var SheetEditor = (function() {
             scheduleAutoSave();
         });
 
-        // Veículo - nome
+        // Veículo
         document.getElementById('vehicle-name').addEventListener('input', scheduleAutoSave);
-
-        // Veículo - upload de foto
         document.getElementById('vehicle-upload').addEventListener('change', handleVehicleUpload);
         document.getElementById('btn-remove-vehicle-photo').addEventListener('click', removeVehiclePhoto);
 
@@ -453,7 +472,6 @@ var SheetEditor = (function() {
                 var canvas = document.createElement('canvas');
                 canvas.width = 280; canvas.height = 180;
                 var ctx = canvas.getContext('2d');
-                // Cover centralizado
                 var ratio = Math.max(280 / img.width, 180 / img.height);
                 var w = img.width * ratio;
                 var h = img.height * ratio;
