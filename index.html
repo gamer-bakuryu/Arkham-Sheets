@@ -134,159 +134,79 @@
                                 <span class="attr-half-header">Metade</span>
                                 <span class="attr-fifth-header">Quinto</span>
                             </div>
-                            <div class="attr-row" data-attr="for">
-                                <label class="attr-label">FOR</label>
-                                <input type="number" class="attr-value" data-attr-field="for" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="con">
-                                <label class="attr-label">CON</label>
-                                <input type="number" class="attr-value" data-attr-field="con" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="tam">
-                                <label class="attr-label">TAM</label>
-                                <input type="number" class="attr-value" data-attr-field="tam" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="des">
-                                <label class="attr-label">DES</label>
-                                <input type="number" class="attr-value" data-attr-field="des" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="apa">
-                                <label class="attr-label">APA</label>
-                                <input type="number" class="attr-value" data-attr-field="apa" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="edu">
-                                <label class="attr-label">EDU</label>
-                                <input type="number" class="attr-value" data-attr-field="edu" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="int">
-                                <label class="attr-label">INT</label>
-                                <input type="number" class="attr-value" data-attr-field="int" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="pod">
-                                <label class="attr-label">POD</label>
-                                <input type="number" class="attr-value" data-attr-field="pod" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
-                            <div class="attr-row" data-attr="sor">
-                                <label class="attr-label">SOR</label>
-                                <input type="number" class="attr-value" data-attr-field="sor" min="0" max="999">
-                                <span class="attr-half">0</span>
-                                <span class="attr-fifth">0</span>
-                            </div>
+                            <div class="attr-row" data-attr="for"><label class="attr-label">FOR</label><input type="number" class="attr-value" data-attr-field="for" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="con"><label class="attr-label">CON</label><input type="number" class="attr-value" data-attr-field="con" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="tam"><label class="attr-label">TAM</label><input type="number" class="attr-value" data-attr-field="tam" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="des"><label class="attr-label">DES</label><input type="number" class="attr-value" data-attr-field="des" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="apa"><label class="attr-label">APA</label><input type="number" class="attr-value" data-attr-field="apa" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="edu"><label class="attr-label">EDU</label><input type="number" class="attr-value" data-attr-field="edu" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="int"><label class="attr-label">INT</label><input type="number" class="attr-value" data-attr-field="int" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="pod"><label class="attr-label">POD</label><input type="number" class="attr-value" data-attr-field="pod" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
+                            <div class="attr-row" data-attr="sor"><label class="attr-label">SOR</label><input type="number" class="attr-value" data-attr-field="sor" min="0" max="999"><span class="attr-half">0</span><span class="attr-fifth">0</span></div>
                         </div>
                     </div>
 
                     <div class="section-card status-section">
                         <h3 class="section-title">Status</h3>
                         <div class="status-grid">
+                            <!-- PV -->
                             <div class="status-block">
                                 <label class="status-label">PV (Pontos de Vida)</label>
                                 <div class="status-values">
-                                    <div class="status-field">
-                                        <span>Atual</span>
-                                        <input type="number" id="hp-current" data-field="hpCurrent" min="0" max="999">
-                                    </div>
+                                    <div class="status-field"><span>Atual</span><input type="number" id="hp-current" data-field="hpCurrent" min="0" max="999"></div>
                                     <span class="status-separator">/</span>
-                                    <div class="status-field">
-                                        <span>Máximo</span>
-                                        <span id="hp-max" class="status-calc">0</span>
-                                    </div>
+                                    <div class="status-field"><span>Máximo</span><span id="hp-max" class="status-calc">0</span></div>
                                 </div>
                                 <small class="calc-hint">Máx = (CON + TAM) / 5 ↓</small>
                                 <div class="status-checks">
-                                    <label class="status-check-label">
-                                        <input type="checkbox" id="check-major-wound" class="status-checkbox" data-field="majorWound">
-                                        <span class="check-text check-danger">Lesão Grave</span>
-                                    </label>
-                                    <label class="status-check-label">
-                                        <input type="checkbox" id="check-unconscious" class="status-checkbox" data-field="unconscious">
-                                        <span class="check-text check-danger">Inconsciente</span>
-                                    </label>
+                                    <label class="status-check-label"><input type="checkbox" id="check-major-wound" class="status-checkbox" data-field="majorWound"><span class="check-text check-danger">Lesão Grave</span></label>
+                                    <label class="status-check-label"><input type="checkbox" id="check-unconscious" class="status-checkbox" data-field="unconscious"><span class="check-text check-danger">Inconsciente</span></label>
                                 </div>
                             </div>
+                            <!-- PM -->
                             <div class="status-block">
                                 <label class="status-label">PM (Pontos de Magia)</label>
                                 <div class="status-values">
-                                    <div class="status-field">
-                                        <span>Atual</span>
-                                        <input type="number" id="mp-current" data-field="mpCurrent" min="0" max="999">
-                                    </div>
+                                    <div class="status-field"><span>Atual</span><input type="number" id="mp-current" data-field="mpCurrent" min="0" max="999"></div>
                                     <span class="status-separator">/</span>
-                                    <div class="status-field">
-                                        <span>Máximo</span>
-                                        <span id="mp-max" class="status-calc">0</span>
-                                    </div>
+                                    <div class="status-field"><span>Máximo</span><span id="mp-max" class="status-calc">0</span></div>
                                 </div>
-                                <small class="calc-hint">Máx = POD / 5 ↓</small>
+                                <small class="calc-hint">Máx = (POD / 5 ↓) + Adicionais</small>
+                                <div class="bonus-mp-container">
+                                    <label class="bonus-mp-label">Pontos Adicionais</label>
+                                    <input type="number" id="mp-bonus" class="bonus-mp-input" min="0" max="999" value="0">
+                                </div>
                             </div>
+                            <!-- Sanidade -->
                             <div class="status-block">
                                 <label class="status-label">Sanidade</label>
                                 <div class="status-values">
-                                    <div class="status-field">
-                                        <span>Atual</span>
-                                        <input type="number" id="san-current" data-field="sanCurrent" min="0" max="999">
-                                    </div>
+                                    <div class="status-field"><span>Atual</span><input type="number" id="san-current" data-field="sanCurrent" min="0" max="999"></div>
                                     <span class="status-separator">/</span>
-                                    <div class="status-field">
-                                        <span>Máximo</span>
-                                        <span id="san-max" class="status-calc">0</span>
-                                    </div>
+                                    <div class="status-field"><span>Máximo</span><span id="san-max" class="status-calc">0</span></div>
                                 </div>
                                 <small class="calc-hint">Máx = POD</small>
                                 <div class="status-checks">
-                                    <label class="status-check-label">
-                                        <input type="checkbox" id="check-temp-insanity" class="status-checkbox" data-field="tempInsanity">
-                                        <span class="check-text check-insanity">Insanidade Temporária</span>
-                                    </label>
-                                    <label class="status-check-label">
-                                        <input type="checkbox" id="check-indef-insanity" class="status-checkbox" data-field="indefInsanity">
-                                        <span class="check-text check-insanity">Insanidade Indefinida</span>
-                                    </label>
+                                    <label class="status-check-label"><input type="checkbox" id="check-temp-insanity" class="status-checkbox" data-field="tempInsanity"><span class="check-text check-insanity">Insanidade Temporária</span></label>
+                                    <label class="status-check-label"><input type="checkbox" id="check-indef-insanity" class="status-checkbox" data-field="indefInsanity"><span class="check-text check-insanity">Insanidade Indefinida</span></label>
                                 </div>
                             </div>
+                            <!-- MOV -->
                             <div class="status-block">
                                 <label class="status-label">Movimento (MOV)</label>
-                                <div class="status-values">
-                                    <div class="status-field">
-                                        <span>Valor</span>
-                                        <span id="mov-value" class="status-calc">0</span>
-                                    </div>
-                                </div>
+                                <div class="status-values"><div class="status-field"><span>Valor</span><span id="mov-value" class="status-calc">0</span></div></div>
                                 <small class="calc-hint">Calculado por FOR, DES e TAM</small>
                             </div>
+                            <!-- Dano Extra -->
                             <div class="status-block">
                                 <label class="status-label">Dano Extra</label>
-                                <div class="status-values">
-                                    <div class="status-field">
-                                        <span>Valor</span>
-                                        <span id="dmg-bonus" class="status-calc">—</span>
-                                    </div>
-                                </div>
+                                <div class="status-values"><div class="status-field"><span>Valor</span><span id="dmg-bonus" class="status-calc">—</span></div></div>
                                 <small class="calc-hint">Baseado em FOR + TAM</small>
                             </div>
+                            <!-- Corpo -->
                             <div class="status-block">
                                 <label class="status-label">Corpo</label>
-                                <div class="status-values">
-                                    <div class="status-field">
-                                        <span>Valor</span>
-                                        <span id="build-value" class="status-calc">0</span>
-                                    </div>
-                                </div>
+                                <div class="status-values"><div class="status-field"><span>Valor</span><span id="build-value" class="status-calc">0</span></div></div>
                                 <small class="calc-hint">Baseado em FOR + TAM</small>
                             </div>
                         </div>
@@ -310,11 +230,10 @@
 
             <!-- ===== ABA DE INVENTÁRIO ===== -->
             <section id="tab-inventory" class="tab-content">
-                <!-- Patrimônio e Veículo lado a lado -->
+                <!-- Patrimônio e Veículo -->
                 <div class="section-card">
                     <h3 class="section-title">Patrimônio e Veículo</h3>
                     <div class="assets-grid">
-                        <!-- Saldo -->
                         <div class="asset-block">
                             <div class="wealth-container">
                                 <div class="wealth-display">
@@ -328,7 +247,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Veículo -->
                         <div class="asset-block">
                             <div class="vehicle-container">
                                 <div class="vehicle-photo-container">
@@ -349,7 +267,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Itens -->
                 <div class="section-card">
                     <div class="section-header-row">
@@ -357,9 +274,7 @@
                         <button id="btn-add-item" class="btn btn-primary btn-small">+ Adicionar Item</button>
                     </div>
                     <div id="inventory-list" class="inventory-list"></div>
-                    <div id="no-items-msg" class="empty-state-small">
-                        <p>Nenhum item no inventário.</p>
-                    </div>
+                    <div id="no-items-msg" class="empty-state-small"><p>Nenhum item no inventário.</p></div>
                 </div>
             </section>
 
@@ -371,9 +286,7 @@
                         <button id="btn-add-weapon" class="btn btn-primary btn-small">+ Adicionar Arma</button>
                     </div>
                     <div id="weapons-list" class="weapons-list"></div>
-                    <div id="no-weapons-msg" class="empty-state-small">
-                        <p>Nenhuma arma registrada.</p>
-                    </div>
+                    <div id="no-weapons-msg" class="empty-state-small"><p>Nenhuma arma registrada.</p></div>
                 </div>
             </section>
 
@@ -385,9 +298,7 @@
                         <button id="btn-add-spell" class="btn btn-primary btn-small">+ Adicionar Magia</button>
                     </div>
                     <div id="magic-list" class="magic-list"></div>
-                    <div id="no-spells-msg" class="empty-state-small">
-                        <p>Nenhuma magia registrada.</p>
-                    </div>
+                    <div id="no-spells-msg" class="empty-state-small"><p>Nenhuma magia registrada.</p></div>
                 </div>
             </section>
 
@@ -399,9 +310,7 @@
                         <button id="btn-add-ability" class="btn btn-primary btn-small">+ Adicionar Habilidade</button>
                     </div>
                     <div id="abilities-list" class="abilities-list"></div>
-                    <div id="no-abilities-msg" class="empty-state-small">
-                        <p>Nenhuma habilidade registrada.</p>
-                    </div>
+                    <div id="no-abilities-msg" class="empty-state-small"><p>Nenhuma habilidade registrada.</p></div>
                 </div>
             </section>
 
@@ -414,9 +323,7 @@
                             <button id="btn-add-relation" class="btn btn-primary btn-small">+ Adicionar Relação</button>
                         </div>
                         <div id="relations-list" class="relations-list"></div>
-                        <div id="no-relations-msg" class="empty-state-small">
-                            <p>Nenhuma relação registrada.</p>
-                        </div>
+                        <div id="no-relations-msg" class="empty-state-small"><p>Nenhuma relação registrada.</p></div>
                     </div>
                     <div class="section-card">
                         <h3 class="section-title">Informações Pessoais</h3>
